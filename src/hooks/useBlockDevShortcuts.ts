@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-/** F12 / Ctrl+U / DevTools kısayollarını engeller (tam koruma değildir). */
+/** F12 / Ctrl+U / sağ tık / DevTools kısayollarını engeller (tam koruma değildir). */
 export function useBlockDevShortcuts() {
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -22,7 +22,15 @@ export function useBlockDevShortcuts() {
       }
     }
 
+    const onContextMenu = (e: MouseEvent) => {
+      e.preventDefault()
+    }
+
     window.addEventListener('keydown', onKeyDown, true)
-    return () => window.removeEventListener('keydown', onKeyDown, true)
+    window.addEventListener('contextmenu', onContextMenu, true)
+    return () => {
+      window.removeEventListener('keydown', onKeyDown, true)
+      window.removeEventListener('contextmenu', onContextMenu, true)
+    }
   }, [])
 }
