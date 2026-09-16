@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Board } from '../components/Board'
+import { Board, type Placement } from '../components/Board'
 import { ChestBadge } from '../components/ChestBadge'
 import { PiecePicker } from '../components/PiecePicker'
 import { PieceThumb } from '../components/PieceThumb'
@@ -10,7 +10,13 @@ import { actionLabel, FULL, MASKS, SKIP } from '../lib/pieces'
 import type { Scenario } from '../lib/tablebase/Tablebase'
 import { useTablebase } from '../lib/tablebase/useTablebase'
 
-type Snap = { board: number; piece: number; deluxe: number; turn: number }
+type Snap = {
+  board: number
+  piece: number
+  deluxe: number
+  turn: number
+  placements: Placement[]
+}
 
 export function PlayPage() {
   const { d } = useLang()
@@ -19,6 +25,7 @@ export function PlayPage() {
   const [deluxe, setDeluxe] = useState(4)
   const [turn, setTurn] = useState(1)
   const [preview, setPreview] = useState<number | null>(null)
+  const [placements, setPlacements] = useState<Placement[]>([])
   const [history, setHistory] = useState<Snap[]>([])
   const { ready, loading, error, result, analyze } = useTablebase('/data/tilings_full.bin')
 
@@ -45,6 +52,7 @@ export function PlayPage() {
         setPiece(prev.piece)
         setDeluxe(prev.deluxe)
         setTurn(prev.turn)
+        setPlacements(prev.placements)
         return h.slice(0, -1)
       })
     }
@@ -66,7 +74,7 @@ export function PlayPage() {
     !done && (best === SKIP || best < 0 || (piece === 6 && deluxe <= 0))
 
   function pushHistory() {
-    setHistory((h) => [...h, { board, piece, deluxe, turn }])
+    setHistory((h) => [...h, { board, piece, deluxe, turn, placements }])
   }
 
   function place(action: number, figure = piece) {
@@ -77,6 +85,7 @@ export function PlayPage() {
     if (figure === 6) setDeluxe((x) => x - 1)
     setPiece(figure)
     setBoard((b) => b | mask)
+    setPlacements((p) => [...p, { figure, action }])
     setTurn((t) => t + 1)
   }
 
@@ -93,6 +102,7 @@ export function PlayPage() {
       setPiece(prev.piece)
       setDeluxe(prev.deluxe)
       setTurn(prev.turn)
+      setPlacements(prev.placements)
       return h.slice(0, -1)
     })
   }
@@ -102,6 +112,7 @@ export function PlayPage() {
     setPiece(1)
     setDeluxe(4)
     setTurn(1)
+    setPlacements([])
     setHistory([])
   }
 
@@ -188,6 +199,7 @@ export function PlayPage() {
           <div className="flex w-full flex-1 items-center justify-center py-2">
             <Board
               board={board}
+              placements={placements}
               piece={piece}
               bestAction={piece === 6 && deluxe <= 0 ? -1 : best}
               previewAction={preview}

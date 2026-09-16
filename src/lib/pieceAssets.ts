@@ -12,3 +12,14 @@ export const PIECE_IMG = [
 export function pieceImg(pieceId: number): string {
   return PIECE_IMG[pieceId] ?? PIECE_IMG[0]
 }
+
+/** Oyun taşı fill renkleri (fish_*.png merkez tonları) */
+export const PIECE_COLORS = [
+  '#e89420', // 0 Tekli — turuncu
+  '#1a66ff', // 1 Cubuk — mavi
+  '#2ee62e', // 2 L — yeşil
+  '#e6c01a', // 3 Ters L — sarı
+  '#1ac8e6', // 4 Kare — cyan
+  '#e62828', // 5 S — kırmızı
+  '#d43cff', // 6 Deluxe — magenta
+] as const
