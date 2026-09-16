@@ -1,0 +1,43 @@
+{
+  "format": "FJTB",
+  "version": 1,
+  "encoding": "python_jigsaw_bitboard",
+  "total": 182131,
+  "l10_count": 21910,
+  "hamle_dagilimi": {
+    "4": 1,
+    "5": 6,
+    "6": 96,
+    "7": 502,
+    "8": 2010,
+    "9": 5859,
+    "10": 13436,
+    "11": 21517,
+    "12": 29384,
+    "13": 32316,
+    "14": 28870,
+    "15": 21318,
+    "16": 15003,
+    "17": 6137,
+    "18": 4264,
+    "19": 718,
+    "20": 624,
+    "21": 27,
+    "22": 42,
+    "24": 1
+  },
+  "piece_names": {
+    "0": "Tekli",
+    "1": "Cubuk",
+    "2": "L",
+    "3": "Ters L",
+    "4": "Kare",
+    "5": "S",
+    "6": "Deluxe"
+  },
+  "files": {
+    "full": "tilings_full.bin",
+    "l10": "tilings_l10.bin"
+  },
+  "load_strategy": "Once L10 (~1MB) for UI; lazy-load full on demand"
+}
