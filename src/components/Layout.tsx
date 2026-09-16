@@ -39,7 +39,7 @@ export function Layout() {
               className={`flex items-center px-2.5 py-1.5 ${lang === 'tr' ? 'bg-white/15' : 'opacity-55 hover:opacity-90'}`}
               onClick={() => setLang('tr')}
             >
-              <FlagTr className="h-4 w-6 rounded-[2px] shadow-sm" />
+              <FlagTr className="h-3.5 w-[1.35rem] overflow-hidden rounded-[2px] shadow-sm" />
             </button>
             <button
               type="button"
@@ -48,7 +48,7 @@ export function Layout() {
               className={`flex items-center px-2.5 py-1.5 ${lang === 'en' ? 'bg-white/15' : 'opacity-55 hover:opacity-90'}`}
               onClick={() => setLang('en')}
             >
-              <FlagEn className="h-4 w-6 rounded-[2px] shadow-sm" />
+              <FlagEn className="h-3.5 w-[1.35rem] overflow-hidden rounded-[2px] shadow-sm" />
             </button>
           </div>
         </nav>

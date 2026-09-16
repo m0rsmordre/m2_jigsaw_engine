@@ -134,6 +134,23 @@ export class Tablebase {
     return placed
   }
 
+  /** Tahtada henüz örtülmemiş deluxe (pid=6) adedi. */
+  private remainingDeluxe(idx: number, board: number): number {
+    const base = this.offsets[idx]
+    const ln = this.lengths[idx]
+    let n = 0
+    for (let j = 0; j < ln; j++) {
+      if (this.flatPids[base + j] !== 6) continue
+      if (this.flatMasks[base + j] & board) continue
+      n++
+    }
+    return n
+  }
+
+  private fitsDeluxeStock(idx: number, board: number, deluxeLeft: number): boolean {
+    return this.remainingDeluxe(idx, board) <= deluxeLeft
+  }
+
   updateActive(board: number): number[] {
     if (board === this.activeBoard) return this.activeIdx
     const old = this.activeBoard
@@ -167,22 +184,37 @@ export class Tablebase {
     return this.activeIdx
   }
 
-  aliveStats(board: number): { count: number; minRemaining: number } {
+  aliveStats(
+    board: number,
+    deluxeLeft = 99,
+  ): { count: number; minRemaining: number } {
     if (board === 0) {
       let min = 99
-      for (let i = 0; i < this.nTilings; i++) min = Math.min(min, this.lengths[i])
-      return { count: this.nTilings, minRemaining: this.nTilings ? min : -1 }
+      let count = 0
+      for (let i = 0; i < this.nTilings; i++) {
+        if (!this.fitsDeluxeStock(i, 0, deluxeLeft)) continue
+        count++
+        min = Math.min(min, this.lengths[i])
+      }
+      return { count, minRemaining: count ? min : -1 }
     }
     const active = this.updateActive(board)
     if (!active.length) return { count: 0, minRemaining: -1 }
     let min = 99
+    let count = 0
     for (const i of active) {
+      if (!this.fitsDeluxeStock(i, board, deluxeLeft)) continue
+      count++
       min = Math.min(min, this.lengths[i] - this.placedCount(i, board))
     }
-    return { count: active.length, minRemaining: min }
+    return { count, minRemaining: count ? min : -1 }
   }
 
-  evaluatePlacements(board: number, figure: number): PlacementScore[] {
+  evaluatePlacements(
+    board: number,
+    figure: number,
+    deluxeLeft = 99,
+  ): PlacementScore[] {
     const masks: number[] = []
     const figMasks = MASKS[figure]
     for (let a = 0; a < ACTIONS; a++) {
@@ -207,16 +239,19 @@ export class Tablebase {
           results[k].minRemaining = -1
           continue
         }
-        results[k].surviving = ids.length
         let w = 0
         let min = 99
+        let surviving = 0
         for (let t = 0; t < ids.length; t++) {
           const i = ids[t]
+          if (!this.fitsDeluxeStock(i, 0, deluxeLeft)) continue
+          surviving++
           w += this.weights[i]
           min = Math.min(min, this.lengths[i] - 1)
         }
+        results[k].surviving = surviving
         results[k].weightSum = w
-        results[k].minRemaining = min
+        results[k].minRemaining = surviving ? min : -1
       }
       return results
     }
@@ -229,6 +264,7 @@ export class Tablebase {
 
     const maskIndex = new Map(masks.map((m, k) => [m, k]))
     for (const idx of active) {
+      if (!this.fitsDeluxeStock(idx, board, deluxeLeft)) continue
       const base = this.offsets[idx]
       const ln = this.lengths[idx]
       const placed = this.placedCount(idx, board)
@@ -254,13 +290,14 @@ export class Tablebase {
   recommend(
     board: number,
     figure: number,
-    opts?: { allowDeluxe?: boolean },
+    opts?: { deluxeLeft?: number },
   ): { action: number; expected: number } {
-    if (figure === 6 && opts?.allowDeluxe === false) {
-      const { minRemaining } = this.aliveStats(board)
+    const deluxeLeft = opts?.deluxeLeft ?? 99
+    if (figure === 6 && deluxeLeft <= 0) {
+      const { minRemaining } = this.aliveStats(board, deluxeLeft)
       return { action: SKIP, expected: minRemaining >= 0 ? minRemaining : Infinity }
     }
-    const evals = this.evaluatePlacements(board, figure)
+    const evals = this.evaluatePlacements(board, figure, deluxeLeft)
     let best: PlacementScore | null = null
     for (const ev of evals) {
       if (ev.surviving <= 0 || ev.action === SKIP) continue
@@ -273,7 +310,7 @@ export class Tablebase {
       }
     }
     if (!best) {
-      const { minRemaining } = this.aliveStats(board)
+      const { minRemaining } = this.aliveStats(board, deluxeLeft)
       return { action: SKIP, expected: minRemaining >= 0 ? minRemaining : Infinity }
     }
     return { action: best.action, expected: best.minRemaining + 1 }
@@ -283,9 +320,9 @@ export class Tablebase {
   shortestContinuations(
     board: number,
     topK = 10,
-    opts?: { allowDeluxe?: boolean; preferFigure?: number },
+    opts?: { deluxeLeft?: number; preferFigure?: number },
   ): Scenario[] {
-    const allowDeluxe = opts?.allowDeluxe !== false
+    const deluxeLeft = opts?.deluxeLeft ?? 99
     const prefer =
       opts?.preferFigure !== undefined && opts.preferFigure >= 0
         ? opts.preferFigure
@@ -295,6 +332,7 @@ export class Tablebase {
 
     const pushFromIdx = (idx: number): boolean => {
       if (board !== 0 && !this.compatible(idx, board)) return false
+      if (!this.fitsDeluxeStock(idx, board, deluxeLeft)) return false
       const ln = this.lengths[idx]
       const base = this.offsets[idx]
       const placed = this.placedCount(idx, board)
@@ -310,7 +348,8 @@ export class Tablebase {
         const m = this.flatMasks[base + j]
         const pid = this.flatPids[base + j]
         if (m & board) continue
-        if (!allowDeluxe && pid === 6) continue
+        // Deluxe stok 0 ise kalan deluxe'ı next olarak önerme
+        if (pid === 6 && deluxeLeft <= 0) continue
         if (nextMask < 0) {
           nextMask = m
           nextPieceId = pid
@@ -345,14 +384,39 @@ export class Tablebase {
     }
 
     if (board === 0) {
+      const scored: Array<{ idx: number; rem: number; ln: number; hasPrefer: boolean }> = []
       for (let idx = 0; idx < this.nTilings; idx++) {
-        if (pushFromIdx(idx)) break
+        if (!this.fitsDeluxeStock(idx, 0, deluxeLeft)) continue
+        const rem = this.lengths[idx]
+        let hasPrefer = false
+        if (prefer >= 0) {
+          const base = this.offsets[idx]
+          const ln = this.lengths[idx]
+          for (let j = 0; j < ln; j++) {
+            if (this.flatPids[base + j] === prefer) {
+              hasPrefer = true
+              break
+            }
+          }
+        }
+        scored.push({ idx, rem, ln: this.lengths[idx], hasPrefer })
+      }
+      scored.sort(
+        (a, b) =>
+          a.rem - b.rem ||
+          Number(b.hasPrefer) - Number(a.hasPrefer) ||
+          a.ln - b.ln ||
+          a.idx - b.idx,
+      )
+      for (const s of scored) {
+        if (pushFromIdx(s.idx)) break
       }
       return out
     }
 
     const active = this.updateActive(board)
     const scored = active
+      .filter((idx) => this.fitsDeluxeStock(idx, board, deluxeLeft))
       .map((idx) => {
         const rem = this.lengths[idx] - this.placedCount(idx, board)
         let hasPrefer = false
