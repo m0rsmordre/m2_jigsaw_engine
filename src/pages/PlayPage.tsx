@@ -60,44 +60,20 @@ export function PlayPage() {
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [])
 
-  const bestRaw = result?.bestAction ?? -1
+  const best = result?.bestAction ?? -1
   const done = board === FULL
   const movesUsed = Math.max(0, turn - 1)
-  const minRem = result?.minRemaining ?? -1
-  // İstemci emniyeti: taş en kısa yolu koruyan bir hücreye konamıyorsa PASS göster
-  const preservesShortest =
-    minRem >= 0 &&
-    (result?.placements ?? []).some(
-      (p) => p.surviving > 0 && p.action !== SKIP && p.minRemaining === minRem - 1,
-    )
-  const forcePass = piece === 6 && deluxe <= 0
-  const best =
-    forcePass || bestRaw === SKIP || bestRaw < 0
-      ? SKIP
-      : minRem >= 0 && !preservesShortest
-        ? SKIP
-        : bestRaw
-  const expectedLeft = (() => {
-    if (!result || !Number.isFinite(result.expected)) return NaN
-    if (best === SKIP && minRem >= 0) return minRem + 1
-    return result.expected
-  })()
+  const expectedLeft =
+    result && Number.isFinite(result.expected) ? result.expected : NaN
   const projected = done
     ? movesUsed
     : Number.isFinite(expectedLeft)
       ? projectedMoves(turn, Math.ceil(expectedLeft))
       : NaN
-  const recommendPass = !done && (best === SKIP || forcePass)
-  const passReason =
-    forcePass || bestRaw === SKIP
-      ? result?.passReason ?? (forcePass ? 'no_fit' : 'regret')
-      : minRem >= 0 && !preservesShortest
-        ? 'regret'
-        : result?.passReason
-  const waitPieceId =
-    recommendPass
-      ? (result?.waitPieceId ?? result?.scenarios?.[0]?.nextPieceId)
-      : undefined
+  const forcePass = piece === 6 && deluxe <= 0
+  const recommendPass = !done && (best === SKIP || best < 0 || forcePass)
+  const passReason = forcePass ? 'no_fit' : result?.passReason
+  const waitPieceId = result?.waitPieceId ?? result?.scenarios?.[0]?.nextPieceId
   const waitPieceName =
     waitPieceId !== undefined && waitPieceId >= 0 && waitPieceId < PIECE_NAMES.length
       ? PIECE_NAMES[waitPieceId]
@@ -108,6 +84,10 @@ export function PlayPage() {
       : recommendPass
         ? d.mustPass
         : null
+  const offShortestHint =
+    !recommendPass && result?.offShortest && waitPieceName
+      ? d.offShortestHint.replace('{piece}', waitPieceName)
+      : null
 
   function pushHistory() {
     setHistory((h) => [...h, { board, piece, deluxe, turn, placements }])
@@ -309,6 +289,9 @@ export function PlayPage() {
                 </div>
                 {passHint && (
                   <p className="mt-2 text-xs font-medium text-amber-200/90">{passHint}</p>
+                )}
+                {offShortestHint && (
+                  <p className="mt-2 text-xs font-medium text-sky-200/90">{offShortestHint}</p>
                 )}
                 <div className="mt-2 grid grid-cols-2 gap-2 text-xs">
                   <div className="rounded-xl bg-white/5 p-2" title={d.estRemainingHint}>

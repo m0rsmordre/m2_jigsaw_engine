@@ -28,11 +28,13 @@ const dict = {
     gameOverHint: 'Hamle sayına göre kazandığın sandık:',
     yourMoves: 'Toplam hamle',
     analysis: 'Analiz',
-    analysisHint: 'En kısa devam yollarına göre öneri (gerekirse pas).',
+    analysisHint: 'Elimdeki taş için en iyi hamle; son aşamada gerekirse pas.',
     bestMove: 'Önerilen hamle',
     mustPass: 'Bu taş sığmıyor — çöp at veya başka taş seç.',
     mustPassRegret:
       'Daha kısa yol var; elindeki taş o gidişatta yok — çöp at. Beklenen: {piece}.',
+    offShortestHint:
+      'Bu taş en kısa yolda değil. İstersen çöp atıp {piece} bekleyebilirsin.',
     estRemaining: 'Tahmini kalan hamle',
     estRemainingHint:
       'Seçili taş için en iyi hamleden sonra tahmini kaç hamle kaldığı. Eski E[kalan] ifadesinin açılımı budur.',
@@ -103,11 +105,13 @@ const dict = {
     gameOverHint: 'Chest earned for your move count:',
     yourMoves: 'Total moves',
     analysis: 'Analysis',
-    analysisHint: 'Suggestions follow shortest paths (pass when needed).',
+    analysisHint: 'Best move for the piece in hand; pass only in the endgame if needed.',
     bestMove: 'Suggested move',
     mustPass: 'This piece does not fit — discard or pick another.',
     mustPassRegret:
       'A shorter path exists; your piece is not on it — discard. Wait for: {piece}.',
+    offShortestHint:
+      'This piece is not on the shortest path. You can discard and wait for {piece}.',
     estRemaining: 'Est. moves left',
     estRemainingHint:
       'Estimated remaining moves after the best placement for the selected piece. This is what E[remaining] meant.',
@@ -178,11 +182,13 @@ const dict = {
     gameOverHint: 'Truhe für deine Zugzahl:',
     yourMoves: 'Gesamtzüge',
     analysis: 'Analyse',
-    analysisHint: 'Vorschläge folgen den kürzesten Wegen (Pass wenn nötig).',
+    analysisHint: 'Bester Zug für den Stein in der Hand; Pass nur im Endspiel wenn nötig.',
     bestMove: 'Vorgeschlagener Zug',
     mustPass: 'Dieser Stein passt nicht — verwerfen oder anderen wählen.',
     mustPassRegret:
       'Kürzerer Weg vorhanden; dein Stein ist nicht darauf — verwerfen. Warte auf: {piece}.',
+    offShortestHint:
+      'Dieser Stein liegt nicht auf dem kürzesten Weg. Du kannst verwerfen und auf {piece} warten.',
     estRemaining: 'Geschätzte Restzüge',
     estRemainingHint:
       'Geschätzte verbleibende Züge nach dem besten Zug für den gewählten Stein.',

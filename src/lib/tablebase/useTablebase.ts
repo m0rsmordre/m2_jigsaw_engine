@@ -9,6 +9,7 @@ export type AnalyzeResult = {
   minRemaining: number
   passReason?: 'no_fit' | 'regret'
   waitPieceId?: number
+  offShortest?: boolean
   placements: PlacementScore[]
   scenarios: Scenario[]
 }
@@ -44,6 +45,7 @@ export function useTablebase(packUrl = FULL_PACK) {
           minRemaining: msg.minRemaining,
           passReason: msg.passReason,
           waitPieceId: msg.waitPieceId,
+          offShortest: msg.offShortest,
           placements: msg.placements,
           scenarios: msg.scenarios,
         })

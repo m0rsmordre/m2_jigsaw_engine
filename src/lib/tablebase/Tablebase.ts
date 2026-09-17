@@ -325,55 +325,73 @@ export class Tablebase {
     return false
   }
 
+  /**
+   * Hamle önerisi:
+   * - Varsayılan: elindeki taş için en iyi yerleşim (min kalan, sonra ağırlık).
+   * - Son aşama (globalMin <= 3): taş en kısa gidişatta yoksa PASS —
+   *   Cubuk/Deluxe boşluğunu Tekli ile bozmamak için.
+   * - Erken oyun / boş tahta: Deluxe bekletmez; normal yerleştirme önerir.
+   */
   recommend(
     board: number,
     figure: number,
     opts?: { deluxeLeft?: number },
-  ): { action: number; expected: number; passReason?: 'no_fit' | 'regret' } {
+  ): {
+    action: number
+    expected: number
+    passReason?: 'no_fit' | 'regret'
+    offShortest?: boolean
+  } {
     const deluxeLeft = opts?.deluxeLeft ?? 99
+    /** Bu eşik ve altında "en kısa yolu koru / yoksa pas" devreye girer. */
+    const ENDGAME_PASS_AT = 3
     const { minRemaining: globalMin } = this.aliveStats(board, deluxeLeft)
     const passExpected =
-      globalMin >= 0 ? globalMin + 1 : Infinity // +1: çöp at turu sandığa sayılır
+      globalMin >= 0 ? globalMin + 1 : Infinity
 
     if (figure === 6 && deluxeLeft <= 0) {
       return { action: SKIP, expected: passExpected, passReason: 'no_fit' }
     }
 
     const evals = this.evaluatePlacements(board, figure, deluxeLeft)
-    const hasLegal = evals.some((ev) => ev.surviving > 0 && ev.action !== SKIP)
-
-    // Daha kısa gidişat var ve elindeki taş o gidişatlarda yok → PAS
-    if (globalMin >= 0 && !this.figureOnShortestPaths(board, figure, deluxeLeft)) {
-      return {
-        action: SKIP,
-        expected: passExpected,
-        passReason: hasLegal ? 'regret' : 'no_fit',
-      }
-    }
-
-    // Sadece en kısa yolu koruyan yerleşimler (kalan = globalMin - 1)
     let best: PlacementScore | null = null
     for (const ev of evals) {
       if (ev.surviving <= 0 || ev.action === SKIP) continue
-      if (globalMin >= 0 && ev.minRemaining !== globalMin - 1) continue
       if (
         !best ||
-        ev.weightSum > best.weightSum ||
-        (ev.weightSum === best.weightSum && ev.action < best.action)
+        ev.minRemaining < best.minRemaining ||
+        (ev.minRemaining === best.minRemaining && ev.weightSum > best.weightSum)
       ) {
         best = ev
       }
     }
 
     if (!best) {
+      return { action: SKIP, expected: passExpected, passReason: 'no_fit' }
+    }
+
+    const onShortest =
+      globalMin >= 0 && this.figureOnShortestPaths(board, figure, deluxeLeft)
+    const preserves =
+      globalMin >= 0 && best.minRemaining === globalMin - 1
+    const endgame =
+      globalMin >= 0 && globalMin <= ENDGAME_PASS_AT
+
+    // Son aşama: en kısa gidişatı koruyamıyorsa pas (Cubuk bekle vb.)
+    if (endgame && !preserves) {
       return {
         action: SKIP,
         expected: passExpected,
-        passReason: hasLegal ? 'regret' : 'no_fit',
+        passReason: 'regret',
+        offShortest: true,
       }
     }
 
-    return { action: best.action, expected: best.minRemaining + 1 }
+    return {
+      action: best.action,
+      expected: best.minRemaining + 1,
+      offShortest: !onShortest && !preserves,
+    }
   }
 
   /** En kısa devam yolları. preferFigure varsa kalan parçalar içinde onu next olarak seç. */
