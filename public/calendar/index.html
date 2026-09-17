@@ -3,71 +3,99 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fishing Calendar — Balık Yapboz Yardımcısı</title>
-  <meta name="description" content="Next Fish Jigsaw fishing events for Ezel/Barbaros, Marmara/Bagjanamu, Charon servers with live countdowns in TR/EN." />
+  <title>Takvim — Balık Yapboz Yardımcısı</title>
+  <meta name="description" content="Balık Yapboz etkinlik takvimi: haftalık ızgara, canlı geri sayım, Ezel/Barbaros, Marmara, Charon." />
   <link rel="icon" type="image/png" href="/favicon.png" />
   <link rel="stylesheet" href="/site.css" />
+  <link rel="stylesheet" href="/calendar/calendar.css" />
   <script>
     window.PAGE_I18N = {
       tr: {
         docTitle: 'Takvim — Balık Yapboz Yardımcısı',
         pageTitle: 'Balıkçılık etkinlik takvimi',
-        intro: 'Wiki ve resmi forum takvimlerinden derlenmiştir. Avrupa saatleri TSİ’ye çevrilir. Sayaçlar canlıdır.',
+        intro: 'Wiki ve resmi forum takvimlerinden derlenmiştir. Avrupa saatleri Türkiye Saatine çevrilir. Sayaçlar canlıdır.',
         note: 'Kaynak: Metin2 Wiki / forum — global özel etkinlik duyurusu varsa takvim geçersiz kalabilir.',
         ezelTitle: 'Ezel / Barbaros',
         marmaraTitle: 'Marmara / Bagjanamu',
         charonTitle: 'Charon / Lucifer / Safir / Star',
-        nextTitle: 'Gelecek Balık Yapboz Etkinliği',
+        nextTitle: 'Sıradaki Balıkçılık Etkinliği',
+        weekTitle: 'Bu hafta',
         empty: 'Yaklaşan balıkçılık etkinliği bulunamadı.',
-        untilStart: 'sonra etkinlik başlayacak',
-        untilEnd: 'sonra etkinlik bitecek',
-        ended: 'Etkinlik bitti',
+        untilStart: 'sonra başlayacak',
+        untilEnd: 'sonra bitecek',
+        ended: 'Bitti',
         dayUnit: 'gün',
         hourUnit: 'saat',
-        minUnit: 'dakika',
-        secUnit: 'saniye',
+        minUnit: 'dk',
+        secUnit: 'sn',
+        badgeLive: 'Şimdi canlı',
+        badgeSoon: 'Yaklaşıyor',
+        badgeIdle: 'Beklemede',
+        tabAll: 'Tümü',
+        nextEvent: 'sonraki',
+        noHero: 'Yakın zamanda etkinlik yok.',
+        tipServer: 'Sunucu',
+        tzLabel: 'Türkiye Saati',
       },
       en: {
         docTitle: 'Calendar — Fish Jigsaw Helper',
         pageTitle: 'Fishing event calendar',
-        intro: 'Compiled from the Metin2 Wiki and official forum. Europe times are converted to Turkey time (TSİ). Countdowns update live.',
+        intro: 'Compiled from the Metin2 Wiki and official forum. Europe times are converted to Turkey Time. Live countdowns.',
         note: 'Source: Metin2 Wiki / forum — global special events may override this schedule.',
         ezelTitle: 'Ezel / Barbaros',
         marmaraTitle: 'Marmara / Bagjanamu',
         charonTitle: 'Charon / Lucifer / Safir / Star',
-        nextTitle: 'Next Fishing Jigsaw',
+        nextTitle: 'Next Fishing Event',
+        weekTitle: 'This week',
         empty: 'No upcoming fishing events found.',
-        untilStart: 'until the event starts',
-        untilEnd: 'until the event ends',
-        ended: 'Event ended',
+        untilStart: 'until start',
+        untilEnd: 'until end',
+        ended: 'Ended',
         dayUnit: 'd',
         hourUnit: 'h',
         minUnit: 'm',
         secUnit: 's',
+        badgeLive: 'Live now',
+        badgeSoon: 'Coming up',
+        badgeIdle: 'Idle',
+        tabAll: 'All',
+        nextEvent: 'next',
+        noHero: 'No upcoming events soon.',
+        tipServer: 'Server',
+        tzLabel: 'Turkey Time',
       },
       de: {
         docTitle: 'Kalender — Fisch-Puzzle-Helfer',
         pageTitle: 'Angel-Eventkalender',
-        intro: 'Zusammengestellt aus Metin2-Wiki und offiziellem Forum. Europa-Zeiten werden in türkische Zeit (TSİ) umgerechnet. Countdowns aktualisieren sich live.',
-        note: 'Quelle: Metin2 Wiki / Forum — globale Sonder-Events können diesen Plan überschreiben.',
+        intro: 'Aus Wiki und Forum. Europa-Zeiten werden in die Türkei-Zeit umgerechnet. Live-Countdowns.',
+        note: 'Quelle: Metin2 Wiki / Forum — Sonder-Events können den Plan überschreiben.',
         ezelTitle: 'Ezel / Barbaros',
         marmaraTitle: 'Marmara / Bagjanamu',
         charonTitle: 'Charon / Lucifer / Safir / Star',
-        nextTitle: 'Nächstes Fisch-Puzzle-Event',
-        empty: 'Keine bevorstehenden Angel-Events gefunden.',
-        untilStart: 'bis das Event beginnt',
-        untilEnd: 'bis das Event endet',
-        ended: 'Event beendet',
+        nextTitle: 'Nächstes Angel-Event',
+        weekTitle: 'Diese Woche',
+        empty: 'Keine bevorstehenden Angel-Events.',
+        untilStart: 'bis Start',
+        untilEnd: 'bis Ende',
+        ended: 'Beendet',
         dayUnit: 'T',
         hourUnit: 'Std',
         minUnit: 'Min',
         secUnit: 'Sek',
+        badgeLive: 'Jetzt live',
+        badgeSoon: 'Bald',
+        badgeIdle: 'Wartend',
+        tabAll: 'Alle',
+        nextEvent: 'nächste',
+        noHero: 'Kein Event in Sicht.',
+        tipServer: 'Server',
+        tzLabel: 'Türkei-Zeit',
       },
     }
   </script>
   <script src="/lang.js" defer></script>
 </head>
-<body>
+<body class="calendar-page">
   <div class="wrap">
     <header>
       <h1><a href="/" data-i18n="brand">Balık Yapboz Yardımcısı</a></h1>
@@ -86,29 +114,35 @@
       </nav>
     </header>
 
-    <article>
+    <div class="cal-intro">
       <h2 data-i18n="pageTitle">Balıkçılık etkinlik takvimi</h2>
       <p data-i18n="intro"></p>
       <p class="note" data-i18n="note"></p>
-    </article>
+    </div>
 
-    <article>
-      <h2 data-i18n="ezelTitle">Ezel / Barbaros</h2>
-      <h3 data-i18n="nextTitle">Next Fishing Jigsaw</h3>
-      <div id="ezel-list"></div>
-    </article>
+    <section class="cal-hero" id="cal-hero" aria-live="polite"></section>
 
-    <article>
-      <h2 data-i18n="marmaraTitle">Marmara / Bagjanamu</h2>
-      <h3 data-i18n="nextTitle">Next Fishing Jigsaw</h3>
-      <div id="marmara-list"></div>
-    </article>
+    <section class="cal-week-panel">
+      <div class="cal-week-head">
+        <h3 data-i18n="weekTitle">Bu hafta</h3>
+        <div class="cal-week-nav">
+          <button type="button" id="week-prev" aria-label="Previous week">‹</button>
+          <div class="cal-week-label" id="week-label"></div>
+          <button type="button" id="week-next" aria-label="Next week">›</button>
+        </div>
+      </div>
+      <div class="cal-tabs" id="cal-tabs" role="tablist"></div>
+      <div class="cal-grid" id="cal-grid" role="grid"></div>
+      <div class="cal-legend">
+        <span><i class="l-ezel"></i> Ezel / Barbaros</span>
+        <span><i class="l-marmara"></i> Marmara</span>
+        <span><i class="l-charon"></i> Charon</span>
+      </div>
+    </section>
 
-    <article>
-      <h2 data-i18n="charonTitle">Charon / Lucifer / Safir / Star</h2>
-      <h3 data-i18n="nextTitle">Next Fishing Jigsaw</h3>
-      <div id="charon-list"></div>
-    </article>
+    <div class="cal-strips" id="cal-strips"></div>
+
+    <div class="cal-tip" id="cal-tip" hidden></div>
 
     <footer>
       <nav>
@@ -126,7 +160,10 @@
   (function () {
     var IST = 'Europe/Istanbul'
     var BER = 'Europe/Berlin'
-    var MAX = 2
+    var MAX_STRIP = 3
+    var weekOffset = 0
+    var activeTab = 'all'
+    var tipEl = null
 
     function europeLocalToDate(y, m, d, hour, minute) {
       var fmt = new Intl.DateTimeFormat('en-US', {
@@ -157,58 +194,70 @@
       return { y: +parts.year, m: +parts.month, day: +parts.day, wd: parts.weekday }
     }
 
-    function fmtRange(start, end, lang) {
-      var loc = lang === 'en' ? 'en-GB' : lang === 'de' ? 'de-DE' : 'tr-TR'
-      var day = new Intl.DateTimeFormat(loc, {
-        timeZone: IST, weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
-      }).format(start)
-      var tf = new Intl.DateTimeFormat(loc, {
-        timeZone: IST, hour: '2-digit', minute: '2-digit', hour12: false
+    function istanbulParts(d) {
+      var fmt = new Intl.DateTimeFormat('en-US', {
+        timeZone: IST, year: 'numeric', month: '2-digit', day: '2-digit',
+        weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
       })
-      return day + ' · ' + tf.format(start) + ' – ' + tf.format(end) + ' TSİ'
+      var parts = {}
+      fmt.formatToParts(d).forEach(function (p) {
+        if (p.type !== 'literal') parts[p.type] = p.value
+      })
+      return {
+        y: +parts.year, m: +parts.month, day: +parts.day,
+        wd: parts.weekday, hour: +parts.hour, minute: +parts.minute
+      }
     }
 
     function t(lang, key) {
       return (window.PAGE_I18N[lang] && window.PAGE_I18N[lang][key]) || key
     }
 
-    function countdownText(start, end, now, lang) {
+    function loc(lang) {
+      return lang === 'en' ? 'en-GB' : lang === 'de' ? 'de-DE' : 'tr-TR'
+    }
+
+    function fmtClock(d, lang) {
+      return new Intl.DateTimeFormat(loc(lang), {
+        timeZone: IST, hour: '2-digit', minute: '2-digit', hour12: false
+      }).format(d)
+    }
+
+    function fmtRangeShort(start, end, lang) {
+      return fmtClock(start, lang) + '–' + fmtClock(end, lang) + ' ' + t(lang, 'tzLabel')
+    }
+
+    function fmtRangeLong(start, end, lang) {
+      var day = new Intl.DateTimeFormat(loc(lang), {
+        timeZone: IST, weekday: 'long', day: 'numeric', month: 'long'
+      }).format(start)
+      return day + ' · ' + fmtRangeShort(start, end, lang)
+    }
+
+    function countdownParts(start, end, now) {
       var mode, target
       if (now < start) { mode = 'start'; target = start }
       else if (now < end) { mode = 'end'; target = end }
-      else return t(lang, 'ended')
+      else return { mode: 'ended', days: 0, hours: 0, minutes: 0, seconds: 0 }
       var s = Math.max(0, Math.floor((target - now) / 1000))
-      var days = Math.floor(s / 86400)
-      var hours = Math.floor((s % 86400) / 3600)
-      var mins = Math.floor((s % 3600) / 60)
-      var secs = s % 60
-      if (lang === 'en') {
-        var body = days + t(lang, 'dayUnit') + ' ' + hours + t(lang, 'hourUnit') + ' ' + mins + t(lang, 'minUnit') + ' ' + secs + t(lang, 'secUnit')
-        return body + ' ' + t(lang, mode === 'start' ? 'untilStart' : 'untilEnd')
+      return {
+        mode: mode,
+        days: Math.floor(s / 86400),
+        hours: Math.floor((s % 86400) / 3600),
+        minutes: Math.floor((s % 3600) / 60),
+        seconds: s % 60
       }
-      if (lang === 'de') {
-        var bodyDe = days + ' ' + t(lang, 'dayUnit') + ' ' + hours + ' ' + t(lang, 'hourUnit') + ' ' + mins + ' ' + t(lang, 'minUnit') + ' ' + secs + ' ' + t(lang, 'secUnit')
-        return 'Noch ' + bodyDe + ' ' + t(lang, mode === 'start' ? 'untilStart' : 'untilEnd')
-      }
-      var bodyTr = days + ' ' + t(lang, 'dayUnit') + ' ' + hours + ' ' + t(lang, 'hourUnit') + ' ' + mins + ' ' + t(lang, 'minUnit') + ' ' + secs + ' ' + t(lang, 'secUnit')
-      return bodyTr + ' ' + t(lang, mode === 'start' ? 'untilStart' : 'untilEnd')
     }
 
-    function cardHtml(title, start, end, now, lang) {
-      return '<div class="event-card">' +
-        '<div><strong class="fish">' + title + '</strong></div>' +
-        '<div class="muted">' + fmtRange(start, end, lang) + '</div>' +
-        '<div class="countdown" data-start="' + start.getTime() + '" data-end="' + end.getTime() + '">' +
-        countdownText(start.getTime(), end.getTime(), now, lang) + '</div></div>'
+    function countdownText(start, end, now, lang) {
+      var c = countdownParts(start, end, now)
+      if (c.mode === 'ended') return t(lang, 'ended')
+      var body = c.days + ' ' + t(lang, 'dayUnit') + ' ' + c.hours + ' ' + t(lang, 'hourUnit') + ' ' +
+        c.minutes + ' ' + t(lang, 'minUnit') + ' ' + c.seconds + ' ' + t(lang, 'secUnit')
+      return body + ' ' + t(lang, c.mode === 'start' ? 'untilStart' : 'untilEnd')
     }
 
-    function fill(el, items, now, lang) {
-      var html = ''
-      items.slice(0, MAX).forEach(function (it) {
-        html += cardHtml(it.title, it.start, it.end, now, lang)
-      })
-      el.innerHTML = html || '<p class="muted">' + t(lang, 'empty') + '</p>'
-    }
+    function pad2(n) { return n < 10 ? '0' + n : String(n) }
 
     var ezel = [
       ['2026-03-22T22:00:00+03:00', '2026-03-23T02:00:00+03:00'],
@@ -222,7 +271,6 @@
       ['2026-11-01T22:00:00+03:00', '2026-11-02T02:00:00+03:00']
     ]
 
-    // Marmara fishing only (Europe slots). Sep 2026 forum + March wiki leftovers.
     var marmaraFish = [
       { date: '2026-03-08', slot: 1 },
       { date: '2026-03-14', slot: 2 },
@@ -232,96 +280,334 @@
       { date: '2026-09-20', slot: 1 }
     ]
 
-    function upcomingCharon(now, lang) {
-      var out = []
-      var seen = {}
-      for (var i = 0; i < 90 && out.length < MAX; i++) {
-        var probe = new Date(now + i * 86400000)
-        var b = berlinYmd(probe)
-        var key = b.y + '-' + b.m + '-' + b.day
-        if (seen[key]) continue
-        if (b.wd === 'Wed') {
-          seen[key] = 1
-          var ws = europeLocalToDate(b.y, b.m, b.day, 2, 0)
-          var we = europeLocalToDate(b.y, b.m, b.day, 14, 0)
-          if (we.getTime() > now) {
-            out.push({
-              title: lang === 'en'
-                ? 'Fishing — Wednesday 02:00–14:00 Europe'
-                : lang === 'de'
-                  ? 'Angeln — Mittwoch 02:00–14:00 Europa'
-                  : 'Balıkçılık — Çarşamba 02:00–14:00 Avrupa',
-              start: ws,
-              end: we
-            })
-          }
-        } else if (b.wd === 'Sat') {
-          seen[key] = 1
-          var ss = europeLocalToDate(b.y, b.m, b.day, 14, 0)
-          var se = europeLocalToDate(b.y, b.m, b.day, 18, 0)
-          if (se.getTime() > now) {
-            out.push({
-              title: lang === 'en'
-                ? 'Fishing — Saturday 14:00–18:00 Europe'
-                : lang === 'de'
-                  ? 'Angeln — Samstag 14:00–18:00 Europa'
-                  : 'Balıkçılık — Cumartesi 14:00–18:00 Avrupa',
-              start: ss,
-              end: se
-            })
-          }
-        }
-      }
-      return out.sort(function (a, b) { return a.start - b.start })
-    }
-
-    function upcomingEzel(now, lang) {
+    function allEzel(lang) {
       var label = lang === 'en' ? 'Fishing' : lang === 'de' ? 'Angeln' : 'Balıkçılık'
-      return ezel.map(function (pair) {
-        return { title: label, start: new Date(pair[0]), end: new Date(pair[1]) }
-      }).filter(function (e) { return e.end.getTime() > now })
-        .sort(function (a, b) { return a.start - b.start })
+      return ezel.map(function (pair, i) {
+        return {
+          id: 'ezel-' + i, group: 'ezel', title: label,
+          serverKey: 'ezelTitle',
+          start: new Date(pair[0]), end: new Date(pair[1])
+        }
+      })
     }
 
-    function upcomingMarmara(now, lang) {
-      return marmaraFish.map(function (row) {
+    function allMarmara(lang) {
+      return marmaraFish.map(function (row, i) {
         var p = row.date.split('-').map(Number)
         var h0 = row.slot === 1 ? 16 : 20
         var start = europeLocalToDate(p[0], p[1], p[2], h0, 0)
         var end = row.slot === 1
           ? europeLocalToDate(p[0], p[1], p[2], 20, 0)
           : new Date(europeLocalToDate(p[0], p[1], p[2], 0, 0).getTime() + 86400000)
-        var eu = row.slot === 1 ? '16:00–20:00' : '20:00–24:00'
         return {
-          title: lang === 'en'
-            ? 'Fishing — ' + eu + ' Europe'
-            : lang === 'de'
-              ? 'Angeln — ' + eu + ' Europa'
-              : 'Balıkçılık — ' + eu + ' Avrupa',
-          start: start,
-          end: end
+          id: 'marmara-' + i, group: 'marmara',
+          title: lang === 'en' ? 'Fishing' : lang === 'de' ? 'Angeln' : 'Balıkçılık',
+          serverKey: 'marmaraTitle',
+          start: start, end: end
         }
-      }).filter(function (e) { return e.end.getTime() > now })
+      })
+    }
+
+    function allCharon(from, lang, daysAhead) {
+      var out = []
+      var seen = {}
+      var limit = daysAhead || 60
+      for (var i = -7; i < limit; i++) {
+        var probe = new Date(from + i * 86400000)
+        var b = berlinYmd(probe)
+        var key = b.y + '-' + b.m + '-' + b.day
+        if (seen[key]) continue
+        if (b.wd === 'Wed') {
+          seen[key] = 1
+          out.push({
+            id: 'charon-wed-' + key, group: 'charon',
+            title: lang === 'en' ? 'Fishing' : lang === 'de' ? 'Angeln' : 'Balıkçılık',
+            serverKey: 'charonTitle',
+            start: europeLocalToDate(b.y, b.m, b.day, 2, 0),
+            end: europeLocalToDate(b.y, b.m, b.day, 14, 0)
+          })
+        } else if (b.wd === 'Sat') {
+          seen[key] = 1
+          out.push({
+            id: 'charon-sat-' + key, group: 'charon',
+            title: lang === 'en' ? 'Fishing' : lang === 'de' ? 'Angeln' : 'Balıkçılık',
+            serverKey: 'charonTitle',
+            start: europeLocalToDate(b.y, b.m, b.day, 14, 0),
+            end: europeLocalToDate(b.y, b.m, b.day, 18, 0)
+          })
+        }
+      }
+      return out
+    }
+
+    function allEvents(now, lang) {
+      return allEzel(lang).concat(allMarmara(lang)).concat(allCharon(now, lang, 75))
         .sort(function (a, b) { return a.start - b.start })
+    }
+
+    function upcoming(list, now) {
+      return list.filter(function (e) { return e.end.getTime() > now })
+        .sort(function (a, b) { return a.start - b.start })
+    }
+
+    /** Monday 00:00-ish TSİ for the week of (now + offsetWeeks). */
+    function getWeekDays(now, offsetWeeks) {
+      var ref = new Date(now + offsetWeeks * 7 * 86400000)
+      var p = istanbulParts(ref)
+      var map = { Mon: 0, Tue: 1, Wed: 2, Thu: 3, Fri: 4, Sat: 5, Sun: 6 }
+      var wd = map[p.wd] != null ? map[p.wd] : 0
+      // Walk backward from ref noon to Monday
+      var cursor = new Date(Date.UTC(p.y, p.m - 1, p.day, 12, 0))
+      cursor = new Date(cursor.getTime() - wd * 86400000)
+      var days = []
+      for (var i = 0; i < 7; i++) {
+        var mid = new Date(cursor.getTime() + i * 86400000)
+        var ip = istanbulParts(mid)
+        days.push({
+          y: ip.y, m: ip.m, day: ip.day, wd: ip.wd,
+          key: ip.y + '-' + pad2(ip.m) + '-' + pad2(ip.day),
+          mid: mid.getTime()
+        })
+      }
+      return days
+    }
+
+    function eventDayKeys(ev) {
+      var keys = []
+      var t0 = ev.start.getTime()
+      var t1 = ev.end.getTime()
+      for (var t = t0; t < t1; t += 3600000) {
+        var ip = istanbulParts(new Date(t))
+        var k = ip.y + '-' + pad2(ip.m) + '-' + pad2(ip.day)
+        if (keys.indexOf(k) < 0) keys.push(k)
+      }
+      // also include start day
+      var s = istanbulParts(ev.start)
+      var sk = s.y + '-' + pad2(s.m) + '-' + pad2(s.day)
+      if (keys.indexOf(sk) < 0) keys.unshift(sk)
+      return keys
+    }
+
+    function renderHero(ev, now, lang) {
+      var el = document.getElementById('cal-hero')
+      if (!ev) {
+        el.innerHTML = '<div class="cal-eyebrow" data-i18n-keep>' + t(lang, 'nextTitle') + '</div>' +
+          '<p class="cal-hero-empty">' + t(lang, 'noHero') + '</p>'
+        return
+      }
+      var c = countdownParts(ev.start.getTime(), ev.end.getTime(), now)
+      var live = c.mode === 'end'
+      var badge = live ? 'live' : (c.mode === 'start' ? 'soon' : 'idle')
+      var badgeText = live ? t(lang, 'badgeLive') : t(lang, 'badgeSoon')
+      el.innerHTML =
+        '<div class="cal-hero-top">' +
+          '<div class="cal-eyebrow">' + t(lang, 'nextTitle') + '</div>' +
+          '<span class="cal-badge ' + badge + '">' + badgeText + '</span>' +
+        '</div>' +
+        '<div class="cal-hero-server" data-group="' + ev.group + '">' + t(lang, ev.serverKey) + '</div>' +
+        '<div class="cal-hero-time" id="hero-time">' + fmtRangeLong(ev.start, ev.end, lang) + '</div>' +
+        '<div class="cal-digits" id="hero-digits" data-start="' + ev.start.getTime() + '" data-end="' + ev.end.getTime() + '">' +
+          digitHtml(c, lang) +
+        '</div>'
+    }
+
+    function digitHtml(c, lang) {
+      if (c.mode === 'ended') {
+        return '<div class="cal-digit" style="grid-column:1/-1"><strong>—</strong><span>' + t(lang, 'ended') + '</span></div>'
+      }
+      return [
+        [c.days, t(lang, 'dayUnit')],
+        [c.hours, t(lang, 'hourUnit')],
+        [c.minutes, t(lang, 'minUnit')],
+        [c.seconds, t(lang, 'secUnit')]
+      ].map(function (pair) {
+        return '<div class="cal-digit"><strong>' + pad2(pair[0]) + '</strong><span>' + pair[1] + '</span></div>'
+      }).join('')
+    }
+
+    function renderTabs(lang) {
+      var tabs = [
+        { id: 'all', label: t(lang, 'tabAll') },
+        { id: 'ezel', label: t(lang, 'ezelTitle') },
+        { id: 'marmara', label: t(lang, 'marmaraTitle') },
+        { id: 'charon', label: t(lang, 'charonTitle') }
+      ]
+      var html = tabs.map(function (tab) {
+        return '<button type="button" class="cal-tab' + (activeTab === tab.id ? ' active' : '') +
+          '" data-group="' + tab.id + '" role="tab">' + tab.label + '</button>'
+      }).join('')
+      document.getElementById('cal-tabs').innerHTML = html
+      document.getElementById('cal-tabs').querySelectorAll('.cal-tab').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          activeTab = btn.getAttribute('data-group')
+          render()
+        })
+      })
+    }
+
+    function weekdayLabel(wd, lang) {
+      var tr = { Mon: 'Pzt', Tue: 'Sal', Wed: 'Çar', Thu: 'Per', Fri: 'Cum', Sat: 'Cmt', Sun: 'Paz' }
+      var en = { Mon: 'Mon', Tue: 'Tue', Wed: 'Wed', Thu: 'Thu', Fri: 'Fri', Sat: 'Sat', Sun: 'Sun' }
+      var de = { Mon: 'Mo', Tue: 'Di', Wed: 'Mi', Thu: 'Do', Fri: 'Fr', Sat: 'Sa', Sun: 'So' }
+      var map = lang === 'en' ? en : lang === 'de' ? de : tr
+      return map[wd] || wd
+    }
+
+    function renderWeek(events, now, lang) {
+      var days = getWeekDays(now, weekOffset)
+      var first = days[0]
+      var last = days[6]
+      document.getElementById('week-label').textContent =
+        pad2(first.day) + '.' + pad2(first.m) + ' – ' + pad2(last.day) + '.' + pad2(last.m) + '.' + last.y
+
+      var today = istanbulParts(new Date(now))
+      var todayKey = today.y + '-' + pad2(today.m) + '-' + pad2(today.day)
+
+      var filtered = events.filter(function (e) {
+        return activeTab === 'all' || e.group === activeTab
+      })
+
+      var html = days.map(function (d) {
+        var dayEvents = filtered.filter(function (e) {
+          return eventDayKeys(e).indexOf(d.key) >= 0
+        })
+        var slots = dayEvents.map(function (e) {
+          var st = e.start.getTime()
+          var en = e.end.getTime()
+          var live = now >= st && now < en
+          var past = now >= en
+          return '<button type="button" class="cal-slot ' + e.group + (live ? ' live' : '') + (past ? ' past' : '') + '"' +
+            ' data-start="' + st + '" data-end="' + en + '" data-group="' + e.group + '"' +
+            ' data-server="' + t(lang, e.serverKey) + '"' +
+            ' aria-label="' + fmtRangeShort(e.start, e.end, lang) + '">' +
+            '<span class="cal-slot-fish" aria-hidden="true">🐟</span>' +
+            '<span class="cal-slot-time">' + fmtRangeShort(e.start, e.end, lang) + '</span>' +
+            '</button>'
+        }).join('')
+
+        return '<div class="cal-day' + (d.key === todayKey ? ' today' : '') + '" role="gridcell">' +
+          '<div class="cal-day-name">' + weekdayLabel(d.wd, lang) + '</div>' +
+          '<div class="cal-day-num">' + d.day + '</div>' +
+          '<div class="cal-slots">' + (slots || '<div class="cal-day-empty"></div>') + '</div>' +
+          '</div>'
+      }).join('')
+
+      document.getElementById('cal-grid').innerHTML = html
+      bindSlots(lang)
+    }
+
+    function bindSlots(lang) {
+      tipEl = document.getElementById('cal-tip')
+      document.querySelectorAll('.cal-slot').forEach(function (btn) {
+        function show(ev) {
+          var st = +btn.getAttribute('data-start')
+          var en = +btn.getAttribute('data-end')
+          var now = Date.now()
+          tipEl.hidden = false
+          tipEl.innerHTML =
+            '<strong>' + btn.getAttribute('data-server') + '</strong>' +
+            '<div class="tip-time">' + fmtRangeShort(new Date(st), new Date(en), lang) + '</div>' +
+            '<div class="tip-cd" data-start="' + st + '" data-end="' + en + '">' +
+            countdownText(st, en, now, lang) + '</div>'
+          tipEl.classList.add('show')
+          moveTip(ev)
+        }
+        function hide() {
+          tipEl.classList.remove('show')
+          tipEl.hidden = true
+        }
+        function moveTip(ev) {
+          var x = (ev.clientX || 0) + 14
+          var y = (ev.clientY || 0) + 14
+          var w = tipEl.offsetWidth || 200
+          var h = tipEl.offsetHeight || 80
+          if (x + w > window.innerWidth - 8) x = window.innerWidth - w - 8
+          if (y + h > window.innerHeight - 8) y = window.innerHeight - h - 8
+          tipEl.style.left = x + 'px'
+          tipEl.style.top = y + 'px'
+        }
+        btn.addEventListener('mouseenter', show)
+        btn.addEventListener('mousemove', moveTip)
+        btn.addEventListener('mouseleave', hide)
+        btn.addEventListener('focus', function (ev) {
+          show({ clientX: btn.getBoundingClientRect().left, clientY: btn.getBoundingClientRect().bottom })
+        })
+        btn.addEventListener('blur', hide)
+      })
+    }
+
+    function renderStrips(events, now, lang) {
+      var groups = [
+        { id: 'ezel', key: 'ezelTitle' },
+        { id: 'marmara', key: 'marmaraTitle' },
+        { id: 'charon', key: 'charonTitle' }
+      ]
+      var isMobile = window.matchMedia('(max-width: 720px)').matches
+      var html = groups.map(function (g, gi) {
+        var list = upcoming(events.filter(function (e) { return e.group === g.id }), now).slice(0, MAX_STRIP)
+        var next = list[0]
+        var meta = next
+          ? fmtRangeShort(next.start, next.end, lang)
+          : t(lang, 'empty')
+        var open = !isMobile || gi === 0 ? ' open' : ''
+        var body = list.length
+          ? list.map(function (e) {
+              var live = now >= e.start.getTime() && now < e.end.getTime()
+              return '<div class="event-card' + (live ? ' live-card' : '') + '">' +
+                '<div><strong class="fish">' + e.title + '</strong></div>' +
+                '<div class="muted">' + fmtRangeLong(e.start, e.end, lang) + '</div>' +
+                '<div class="countdown" data-start="' + e.start.getTime() + '" data-end="' + e.end.getTime() + '">' +
+                countdownText(e.start.getTime(), e.end.getTime(), now, lang) + '</div></div>'
+            }).join('')
+          : '<p class="muted">' + t(lang, 'empty') + '</p>'
+
+        return '<details class="cal-strip" data-group="' + g.id + '"' + open + '>' +
+          '<summary class="cal-strip-summary">' +
+            '<span class="cal-strip-dot"></span>' +
+            '<span class="cal-strip-title">' + t(lang, g.key) + '</span>' +
+            '<span class="cal-strip-meta">' + meta + '</span>' +
+            '<span class="cal-strip-chevron" aria-hidden="true">▾</span>' +
+          '</summary>' +
+          '<div class="cal-strip-body">' + body + '</div>' +
+          '</details>'
+      }).join('')
+      document.getElementById('cal-strips').innerHTML = html
     }
 
     function render() {
       var lang = (window.FJLang && window.FJLang.get()) || 'tr'
       var now = Date.now()
-      fill(document.getElementById('ezel-list'), upcomingEzel(now, lang), now, lang)
-      fill(document.getElementById('marmara-list'), upcomingMarmara(now, lang), now, lang)
-      fill(document.getElementById('charon-list'), upcomingCharon(now, lang), now, lang)
+      var events = allEvents(now, lang)
+      var next = upcoming(events, now)[0] || null
+      renderHero(next, now, lang)
+      renderTabs(lang)
+      renderWeek(events, now, lang)
+      renderStrips(events, now, lang)
     }
 
     function tick() {
       var lang = (window.FJLang && window.FJLang.get()) || 'tr'
       var now = Date.now()
-      document.querySelectorAll('.countdown').forEach(function (el) {
+      var digits = document.getElementById('hero-digits')
+      if (digits) {
+        var c = countdownParts(+digits.getAttribute('data-start'), +digits.getAttribute('data-end'), now)
+        digits.innerHTML = digitHtml(c, lang)
+      }
+      document.querySelectorAll('.countdown, .tip-cd').forEach(function (el) {
         el.textContent = countdownText(+el.getAttribute('data-start'), +el.getAttribute('data-end'), now, lang)
       })
     }
 
     document.addEventListener('DOMContentLoaded', function () {
+      tipEl = document.getElementById('cal-tip')
+      document.getElementById('week-prev').addEventListener('click', function () {
+        weekOffset -= 1
+        render()
+      })
+      document.getElementById('week-next').addEventListener('click', function () {
+        weekOffset += 1
+        render()
+      })
       render()
       setInterval(tick, 1000)
     })
