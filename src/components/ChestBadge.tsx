@@ -1,4 +1,4 @@
-import { chestFromMoves, type ChestTier } from '../lib/chest'
+import { chestCode, chestFromMoves, type ChestTier } from '../lib/chest'
 import { useLang } from '../hooks/useLang'
 
 type Props = {
@@ -13,9 +13,10 @@ const TIER_STYLE: Record<ChestTier, string> = {
 }
 
 export function ChestBadge({ moves, compact }: Props) {
-  const { d } = useLang()
+  const { lang, d } = useLang()
   if (!Number.isFinite(moves) || moves < 0) return null
   const tier = chestFromMoves(moves)
+  const code = chestCode(tier, lang)
   const label =
     tier === 'B' ? d.chestB : tier === 'O' ? d.chestO : d.chestK
   return (
@@ -27,7 +28,7 @@ export function ChestBadge({ moves, compact }: Props) {
       ].join(' ')}
       title={`${moves} ${d.movesLabel} → ${label}`}
     >
-      {compact ? `${tier} · ${moves}` : label}
+      {compact ? `${code} · ${moves}` : label}
     </span>
   )
 }
