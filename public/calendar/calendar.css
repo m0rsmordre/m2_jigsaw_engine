@@ -140,13 +140,39 @@ body.calendar-page header h1 {
 .cal-hero-server[data-group='charon'] { color: var(--cal-charon); }
 
 .cal-hero-time {
-  font-family: var(--cal-display);
-  font-size: clamp(1.55rem, 4.2vw, 2.35rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.15;
   margin: 0.15rem 0 0.85rem;
   color: #fff;
+}
+.cal-hero-day {
+  font-family: var(--cal-display);
+  font-size: clamp(1.35rem, 3.6vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+.cal-hero-clock {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.65rem;
+  margin-top: 0.35rem;
+}
+.cal-hero-range {
+  font-family: var(--cal-display);
+  font-size: clamp(1.35rem, 3.8vw, 2.15rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.cal-hero-tz {
+  font-family: var(--cal-sans);
+  font-size: clamp(0.85rem, 2vw, 1.05rem);
+  font-weight: 600;
+  color: var(--cal-foam);
+  opacity: 0.9;
+  white-space: nowrap;
 }
 
 .cal-digits {

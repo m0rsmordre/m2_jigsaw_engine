@@ -35,7 +35,7 @@
         nextEvent: 'sonraki',
         noHero: 'Yakın zamanda etkinlik yok.',
         tipServer: 'Sunucu',
-        tzLabel: 'Türkiye Saati',
+        tzLabel: 'Türkiye\u00A0Saati',
       },
       en: {
         docTitle: 'Calendar — Fish Jigsaw Helper',
@@ -62,7 +62,7 @@
         nextEvent: 'next',
         noHero: 'No upcoming events soon.',
         tipServer: 'Server',
-        tzLabel: 'Turkey Time',
+        tzLabel: 'Turkey\u00A0Time',
       },
       de: {
         docTitle: 'Kalender — Fisch-Puzzle-Helfer',
@@ -89,7 +89,7 @@
         nextEvent: 'nächste',
         noHero: 'Kein Event in Sicht.',
         tipServer: 'Server',
-        tzLabel: 'Türkei-Zeit',
+        tzLabel: 'Türkei\u2011Zeit',
       },
     }
   </script>
@@ -232,6 +232,17 @@
         timeZone: IST, weekday: 'long', day: 'numeric', month: 'long'
       }).format(start)
       return day + ' · ' + fmtRangeShort(start, end, lang)
+    }
+
+    function heroTimeHtml(start, end, lang) {
+      var day = new Intl.DateTimeFormat(loc(lang), {
+        timeZone: IST, weekday: 'long', day: 'numeric', month: 'long'
+      }).format(start)
+      return '<div class="cal-hero-day">' + day + '</div>' +
+        '<div class="cal-hero-clock">' +
+          '<span class="cal-hero-range">' + fmtClock(start, lang) + '–' + fmtClock(end, lang) + '</span>' +
+          '<span class="cal-hero-tz">' + t(lang, 'tzLabel') + '</span>' +
+        '</div>'
     }
 
     function countdownParts(start, end, now) {
@@ -405,7 +416,7 @@
           '<span class="cal-badge ' + badge + '">' + badgeText + '</span>' +
         '</div>' +
         '<div class="cal-hero-server" data-group="' + ev.group + '">' + t(lang, ev.serverKey) + '</div>' +
-        '<div class="cal-hero-time" id="hero-time">' + fmtRangeLong(ev.start, ev.end, lang) + '</div>' +
+        '<div class="cal-hero-time" id="hero-time">' + heroTimeHtml(ev.start, ev.end, lang) + '</div>' +
         '<div class="cal-digits" id="hero-digits" data-start="' + ev.start.getTime() + '" data-end="' + ev.end.getTime() + '">' +
           digitHtml(c, lang) +
         '</div>'
