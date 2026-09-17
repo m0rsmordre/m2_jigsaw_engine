@@ -20,6 +20,8 @@ type OutMsg =
       figure: number
       bestAction: number
       expected: number
+      placeAction?: number
+      placeExpected?: number
       alive: number
       minRemaining: number
       passReason?: 'no_fit' | 'regret'
@@ -56,6 +58,8 @@ self.onmessage = async (ev: MessageEvent<InMsg>) => {
         figure: fig,
         bestAction: rec.action,
         expected: rec.expected,
+        placeAction: rec.placeAction,
+        placeExpected: rec.placeExpected,
         alive: alive.count,
         minRemaining: alive.minRemaining,
         passReason: rec.passReason,

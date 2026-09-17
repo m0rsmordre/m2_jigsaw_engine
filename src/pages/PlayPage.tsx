@@ -61,6 +61,12 @@ export function PlayPage() {
   }, [])
 
   const best = result?.bestAction ?? -1
+  const placeAction =
+    result?.placeAction !== undefined && result.placeAction >= 0
+      ? result.placeAction
+      : best !== SKIP && best >= 0
+        ? best
+        : -1
   const done = board === FULL
   const movesUsed = Math.max(0, turn - 1)
   const expectedLeft =
@@ -88,6 +94,8 @@ export function PlayPage() {
     !recommendPass && result?.offShortest && waitPieceName
       ? d.offShortestHint.replace('{piece}', waitPieceName)
       : null
+  const placeAltLabel =
+    recommendPass && placeAction >= 0 ? actionLabel(placeAction) : null
 
   function pushHistory() {
     setHistory((h) => [...h, { board, piece, deluxe, turn, placements }])
@@ -217,7 +225,7 @@ export function PlayPage() {
               board={board}
               placements={placements}
               piece={piece}
-              bestAction={recommendPass ? -1 : best}
+              bestAction={placeAction >= 0 ? placeAction : -1}
               previewAction={preview}
               onHover={setPreview}
               onPlace={(a) => place(a)}
@@ -289,6 +297,15 @@ export function PlayPage() {
                 </div>
                 {passHint && (
                   <p className="mt-2 text-xs font-medium text-amber-200/90">{passHint}</p>
+                )}
+                {placeAltLabel && (
+                  <button
+                    type="button"
+                    className="mt-2 w-full rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-left text-xs font-medium text-sky-200 hover:border-sky-400/40"
+                    onClick={() => place(placeAction, piece)}
+                  >
+                    {d.placeAnyway.replace('{coord}', placeAltLabel)}
+                  </button>
                 )}
                 {offShortestHint && (
                   <p className="mt-2 text-xs font-medium text-sky-200/90">{offShortestHint}</p>

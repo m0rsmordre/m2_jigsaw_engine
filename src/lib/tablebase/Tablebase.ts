@@ -339,6 +339,8 @@ export class Tablebase {
   ): {
     action: number
     expected: number
+    placeAction?: number
+    placeExpected?: number
     passReason?: 'no_fit' | 'regret'
     offShortest?: boolean
   } {
@@ -370,6 +372,8 @@ export class Tablebase {
       return { action: SKIP, expected: passExpected, passReason: 'no_fit' }
     }
 
+    const placeAction = best.action
+    const placeExpected = best.minRemaining + 1
     const onShortest =
       globalMin >= 0 && this.figureOnShortestPaths(board, figure, deluxeLeft)
     const preserves =
@@ -377,19 +381,23 @@ export class Tablebase {
     const endgame =
       globalMin >= 0 && globalMin <= ENDGAME_PASS_AT
 
-    // Son aşama: en kısa gidişatı koruyamıyorsa pas (Cubuk bekle vb.)
+    // Son aşama: en kısa gidişatı koruyamıyorsa pas öner, ama tahta için placeAction tut
     if (endgame && !preserves) {
       return {
         action: SKIP,
         expected: passExpected,
+        placeAction,
+        placeExpected,
         passReason: 'regret',
         offShortest: true,
       }
     }
 
     return {
-      action: best.action,
-      expected: best.minRemaining + 1,
+      action: placeAction,
+      expected: placeExpected,
+      placeAction,
+      placeExpected,
       offShortest: !onShortest && !preserves,
     }
   }

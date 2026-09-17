@@ -5,6 +5,8 @@ import type { PlacementScore, Scenario } from './Tablebase'
 export type AnalyzeResult = {
   bestAction: number
   expected: number
+  placeAction?: number
+  placeExpected?: number
   alive: number
   minRemaining: number
   passReason?: 'no_fit' | 'regret'
@@ -41,6 +43,8 @@ export function useTablebase(packUrl = FULL_PACK) {
         setResult({
           bestAction: msg.bestAction,
           expected: msg.expected,
+          placeAction: msg.placeAction,
+          placeExpected: msg.placeExpected,
           alive: msg.alive,
           minRemaining: msg.minRemaining,
           passReason: msg.passReason,

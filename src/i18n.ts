@@ -33,6 +33,7 @@ const dict = {
     mustPass: 'Bu taş sığmıyor — çöp at veya başka taş seç.',
     mustPassRegret:
       'Daha kısa yol var; elindeki taş o gidişatta yok — çöp at. Beklenen: {piece}.',
+    placeAnyway: 'Yine de seçili taşı koy: {coord}',
     offShortestHint:
       'Bu taş en kısa yolda değil. İstersen çöp atıp {piece} bekleyebilirsin.',
     estRemaining: 'Tahmini kalan hamle',
@@ -110,6 +111,7 @@ const dict = {
     mustPass: 'This piece does not fit — discard or pick another.',
     mustPassRegret:
       'A shorter path exists; your piece is not on it — discard. Wait for: {piece}.',
+    placeAnyway: 'Place selected piece anyway: {coord}',
     offShortestHint:
       'This piece is not on the shortest path. You can discard and wait for {piece}.',
     estRemaining: 'Est. moves left',
@@ -187,6 +189,7 @@ const dict = {
     mustPass: 'Dieser Stein passt nicht — verwerfen oder anderen wählen.',
     mustPassRegret:
       'Kürzerer Weg vorhanden; dein Stein ist nicht darauf — verwerfen. Warte auf: {piece}.',
+    placeAnyway: 'Ausgewählten Stein trotzdem setzen: {coord}',
     offShortestHint:
       'Dieser Stein liegt nicht auf dem kürzesten Weg. Du kannst verwerfen und auf {piece} warten.',
     estRemaining: 'Geschätzte Restzüge',
