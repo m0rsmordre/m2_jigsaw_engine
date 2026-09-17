@@ -3,51 +3,79 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>How to play — Balık Yapboz Yardımcısı</title>
-  <meta name="description" content="How to use Balık Yapboz Yardımcısı: select pieces, place on the board, follow shortest paths." />
+  <title>Nasıl oynanır? — Balık Yapboz Yardımcısı</title>
+  <meta name="description" content="Balık Yapboz Yardımcısı nasıl kullanılır: taş seç, tahtaya yerleştir, en kısa yolları takip et." />
   <link rel="icon" type="image/png" href="/favicon.png" />
   <link rel="stylesheet" href="/site.css" />
+  <script>
+    window.PAGE_I18N = {
+      tr: {
+        docTitle: 'Nasıl oynanır? — Balık Yapboz Yardımcısı',
+        title: 'Nasıl oynanır?',
+        intro: 'Balık Yapboz Yardımcısı, taş yerleşimlerini planlamanıza ve sandık tahminine yardımcı olur.',
+        step1: 'Oyna sayfasını açın ve elinizdeki taşı seçin.',
+        step2: 'Tahtada sol tıklayarak taşı uygun bir hücreye yerleştirin.',
+        step3: 'Geri al veya Sol ok tuşu ile son hamleyi geri alın.',
+        step4: 'Analiz panelinde önerilen hamleyi ve en kısa devam yollarını kontrol edin.',
+        step5: 'Bir devam senaryosuna tıklayarak sonraki önerilen yerleştirmeyi uygulayın.',
+        step6: 'Deluxe stoğunu takip edin; stok yokken deluxe kullanılamaz.',
+        note: 'Sandık kademeleri: B ≤10 hamle, O 11–24, K ≥25. Bağımsız hayran aracı — Metin2 / Gameforge ile resmi bağlantısı yoktur.',
+      },
+      en: {
+        docTitle: 'How to play — Fish Jigsaw Helper',
+        title: 'How to play',
+        intro: 'Fish Jigsaw Helper helps you plan Fish Jigsaw placements and estimate chests.',
+        step1: 'Open the Play page and select the piece in your hand.',
+        step2: 'Left-click the board to place the piece on a legal cell.',
+        step3: 'Use Undo or the Left Arrow key to reverse the last move.',
+        step4: 'Check the analysis panel for the suggested move and shortest continuations.',
+        step5: 'Click a continuation scenario to apply its next recommended placement.',
+        step6: 'Track deluxe stock so deluxe pieces are only used when available.',
+        note: 'Chest tiers: B ≤10 moves, O 11–24, K ≥25. Independent fan tool — not affiliated with Metin2 / Gameforge.',
+      },
+    }
+  </script>
   <script src="/lang.js" defer></script>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <h1><a href="/" style="color:inherit;text-decoration:none">Balık Yapboz Yardımcısı</a></h1>
+      <h1><a href="/" data-i18n="brand">Balık Yapboz Yardımcısı</a></h1>
       <nav>
-        <a href="/" data-i18n="navPlay">Play</a>
-        <a href="/how-to/" data-i18n="navHowTo">How to</a>
-        <a href="/rules/" data-i18n="navRules">Rules</a>
-        <a href="/calendar/" data-i18n="navCalendar">Calendar</a>
-        <a href="/about/" data-i18n="navAbout">About</a>
-        <a href="/contact/" data-i18n="navContact">Contact</a>
+        <a href="/" data-i18n="navPlay">Oyna</a>
+        <a href="/how-to/" data-i18n="navHowTo">Nasıl oynanır?</a>
+        <a href="/rules/" data-i18n="navRules">Kurallar</a>
+        <a href="/calendar/" data-i18n="navCalendar">Takvim</a>
+        <a href="/about/" data-i18n="navAbout">Hakkımızda</a>
+        <a href="/contact/" data-i18n="navContact">İletişim</a>
         <div class="lang-switch" role="group" aria-label="Language">
-          <button type="button" data-lang-btn="tr">TR</button>
-          <button type="button" data-lang-btn="en">EN</button>
+          <button type="button" data-lang-btn="tr"></button>
+          <button type="button" data-lang-btn="en"></button>
         </div>
       </nav>
     </header>
     <article>
-      <h2>How to play</h2>
-      <p>Balık Yapboz Yardımcısı helps you plan Fish Jigsaw placements and estimate chests.</p>
+      <h2 data-i18n="title">Nasıl oynanır?</h2>
+      <p data-i18n="intro"></p>
       <ol>
-        <li>Open the <a href="/">Play</a> page and select the piece in your hand.</li>
-        <li>Left-click the board to place the piece on a legal cell.</li>
-        <li>Use Undo or the Left Arrow key to reverse the last move.</li>
-        <li>Check the analysis panel for the suggested move and shortest continuations.</li>
-        <li>Click a continuation scenario to apply its next recommended placement.</li>
-        <li>Track deluxe stock so deluxe pieces are only used when available.</li>
+        <li data-i18n="step1"></li>
+        <li data-i18n="step2"></li>
+        <li data-i18n="step3"></li>
+        <li data-i18n="step4"></li>
+        <li data-i18n="step5"></li>
+        <li data-i18n="step6"></li>
       </ol>
-      <p class="note">Chest tiers: B ≤10 moves, O 11–24, K ≥25. Independent fan tool — not affiliated with Metin2 / Gameforge.</p>
+      <p class="note" data-i18n="note"></p>
     </article>
     <footer>
       <nav>
-        <a href="/terms/">Terms</a>
-        <a href="/privacy/">Privacy</a>
-        <a href="/cookie-policy/">Cookie Policy</a>
-        <a href="/contact/">Contact</a>
-        <a href="/calendar/">Calendar</a>
+        <a href="/terms/" data-i18n="terms">Terms</a>
+        <a href="/privacy/" data-i18n="privacy">Privacy</a>
+        <a href="/cookie-policy/" data-i18n="cookies">Cookie Policy</a>
+        <a href="/contact/" data-i18n="contact">Contact</a>
+        <a href="/calendar/" data-i18n="calendar">Calendar</a>
       </nav>
-      <p data-i18n="footerNote">Independent fan project. Not affiliated with Metin2 or Gameforge.</p>
+      <p data-i18n="footerNote"></p>
     </footer>
   </div>
 </body>

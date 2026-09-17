@@ -3,50 +3,76 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rules — Balık Yapboz Yardımcısı</title>
-  <meta name="description" content="Fish Jigsaw helper rules: 4×6 board, no rotation, deluxe stock, chest tiers B/O/K." />
+  <title>Kurallar — Balık Yapboz Yardımcısı</title>
+  <meta name="description" content="Balık Yapboz kuralları: 4×6 tahta, döndürme yok, deluxe stok, sandık B/O/K." />
   <link rel="icon" type="image/png" href="/favicon.png" />
   <link rel="stylesheet" href="/site.css" />
+  <script>
+    window.PAGE_I18N = {
+      tr: {
+        docTitle: 'Kurallar — Balık Yapboz Yardımcısı',
+        title: 'Kurallar',
+        r1: '4×6 tahtayı taşlarla doldurmanız gerekir. Taşlar döndürülemez.',
+        r2: 'Her turda bir taş gelir; uygun bir yere koyabilir veya çöpe atabilirsiniz (pas).',
+        r3: 'Deluxe (3×2) taş envanter stoğuyla sınırlıdır; stok 0 iken kullanılamaz.',
+        r4: 'Altın Balık Sandığı (B): 10 veya daha az hamle.',
+        r5: 'Altın Balık Sandığı (O): 11–24 hamle.',
+        r6: 'Altın Balık Sandığı (K): 25 veya daha fazla hamle.',
+        note: 'Bu proje bağımsız bir hayran yapımıdır. Metin2, Gameforge veya yayıncılarıyla resmi bağlantısı yoktur.',
+      },
+      en: {
+        docTitle: 'Rules — Fish Jigsaw Helper',
+        title: 'Rules',
+        r1: 'Fill the 4×6 board with pieces. Pieces cannot be rotated.',
+        r2: 'Each turn you receive a piece; place it legally or discard (pass).',
+        r3: 'Deluxe (3×2) is limited by stock; at 0 stock deluxe cannot be used.',
+        r4: 'Golden Fish Chest (B): 10 moves or fewer.',
+        r5: 'Golden Fish Chest (O): 11–24 moves.',
+        r6: 'Golden Fish Chest (K): 25 or more moves.',
+        note: 'This is an independent fan-made project. It has no official affiliation with Metin2, Gameforge, or their publishers.',
+      },
+    }
+  </script>
   <script src="/lang.js" defer></script>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <h1><a href="/" style="color:inherit;text-decoration:none">Balık Yapboz Yardımcısı</a></h1>
+      <h1><a href="/" data-i18n="brand">Balık Yapboz Yardımcısı</a></h1>
       <nav>
-        <a href="/" data-i18n="navPlay">Play</a>
-        <a href="/how-to/" data-i18n="navHowTo">How to</a>
-        <a href="/rules/" data-i18n="navRules">Rules</a>
-        <a href="/calendar/" data-i18n="navCalendar">Calendar</a>
-        <a href="/about/" data-i18n="navAbout">About</a>
-        <a href="/contact/" data-i18n="navContact">Contact</a>
+        <a href="/" data-i18n="navPlay">Oyna</a>
+        <a href="/how-to/" data-i18n="navHowTo">Nasıl oynanır?</a>
+        <a href="/rules/" data-i18n="navRules">Kurallar</a>
+        <a href="/calendar/" data-i18n="navCalendar">Takvim</a>
+        <a href="/about/" data-i18n="navAbout">Hakkımızda</a>
+        <a href="/contact/" data-i18n="navContact">İletişim</a>
         <div class="lang-switch" role="group" aria-label="Language">
-          <button type="button" data-lang-btn="tr">TR</button>
-          <button type="button" data-lang-btn="en">EN</button>
+          <button type="button" data-lang-btn="tr"></button>
+          <button type="button" data-lang-btn="en"></button>
         </div>
       </nav>
     </header>
     <article>
-      <h2>Rules</h2>
+      <h2 data-i18n="title">Kurallar</h2>
       <ul>
-        <li>Fill the 4×6 board with pieces. Pieces cannot be rotated.</li>
-        <li>Each turn you receive a piece; place it legally or discard (pass).</li>
-        <li>Deluxe (3×2) is limited by stock; at 0 stock deluxe cannot be used.</li>
-        <li>Golden Fish Chest (B): 10 moves or fewer.</li>
-        <li>Golden Fish Chest (O): 11–24 moves.</li>
-        <li>Golden Fish Chest (K): 25 or more moves.</li>
+        <li data-i18n="r1"></li>
+        <li data-i18n="r2"></li>
+        <li data-i18n="r3"></li>
+        <li data-i18n="r4"></li>
+        <li data-i18n="r5"></li>
+        <li data-i18n="r6"></li>
       </ul>
-      <p class="note">This is an independent fan-made project. It has no official affiliation with Metin2, Gameforge, or their publishers.</p>
+      <p class="note" data-i18n="note"></p>
     </article>
     <footer>
       <nav>
-        <a href="/terms/">Terms</a>
-        <a href="/privacy/">Privacy</a>
-        <a href="/cookie-policy/">Cookie Policy</a>
-        <a href="/contact/">Contact</a>
-        <a href="/calendar/">Calendar</a>
+        <a href="/terms/" data-i18n="terms">Terms</a>
+        <a href="/privacy/" data-i18n="privacy">Privacy</a>
+        <a href="/cookie-policy/" data-i18n="cookies">Cookie Policy</a>
+        <a href="/contact/" data-i18n="contact">Contact</a>
+        <a href="/calendar/" data-i18n="calendar">Calendar</a>
       </nav>
-      <p data-i18n="footerNote">Independent fan project. Not affiliated with Metin2 or Gameforge.</p>
+      <p data-i18n="footerNote"></p>
     </footer>
   </div>
 </body>

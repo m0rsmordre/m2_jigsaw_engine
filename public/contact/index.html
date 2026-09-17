@@ -3,45 +3,67 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact — Balık Yapboz Yardımcısı</title>
-  <meta name="description" content="Contact Balık Yapboz Yardımcısı via Discord. Fishing event calendar link included." />
+  <title>İletişim — Balık Yapboz Yardımcısı</title>
+  <meta name="description" content="Balık Yapboz Yardımcısı iletişim: Discord ve takvim." />
   <link rel="icon" type="image/png" href="/favicon.png" />
   <link rel="stylesheet" href="/site.css" />
+  <script>
+    window.PAGE_I18N = {
+      tr: {
+        docTitle: 'İletişim — Balık Yapboz Yardımcısı',
+        title: 'İletişim',
+        p1: 'Sorular, öneriler veya hata bildirimi için Discord sunucumuza katılabilirsiniz.',
+        discord: 'Discord:',
+        calLabel: 'Balıkçılık takvimi:',
+        calLink: 'Takvimi aç',
+        note: 'Bu bağımsız bir hayran projesidir; resmi Metin2 / Gameforge destek kanalı değildir.',
+      },
+      en: {
+        docTitle: 'Contact — Fish Jigsaw Helper',
+        title: 'Contact',
+        p1: 'For questions, suggestions, or bug reports, join our Discord server.',
+        discord: 'Discord:',
+        calLabel: 'Fishing calendar:',
+        calLink: 'Open calendar',
+        note: 'This is an independent fan project and is not an official Metin2 or Gameforge support channel.',
+      },
+    }
+  </script>
   <script src="/lang.js" defer></script>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <h1><a href="/" style="color:inherit;text-decoration:none">Balık Yapboz Yardımcısı</a></h1>
+      <h1><a href="/" data-i18n="brand">Balık Yapboz Yardımcısı</a></h1>
       <nav>
-        <a href="/" data-i18n="navPlay">Play</a>
-        <a href="/how-to/" data-i18n="navHowTo">How to</a>
-        <a href="/rules/" data-i18n="navRules">Rules</a>
-        <a href="/calendar/" data-i18n="navCalendar">Calendar</a>
-        <a href="/about/" data-i18n="navAbout">About</a>
-        <a href="/contact/" data-i18n="navContact">Contact</a>
+        <a href="/" data-i18n="navPlay">Oyna</a>
+        <a href="/how-to/" data-i18n="navHowTo">Nasıl oynanır?</a>
+        <a href="/rules/" data-i18n="navRules">Kurallar</a>
+        <a href="/calendar/" data-i18n="navCalendar">Takvim</a>
+        <a href="/about/" data-i18n="navAbout">Hakkımızda</a>
+        <a href="/contact/" data-i18n="navContact">İletişim</a>
         <div class="lang-switch" role="group" aria-label="Language">
-          <button type="button" data-lang-btn="tr">TR</button>
-          <button type="button" data-lang-btn="en">EN</button>
+          <button type="button" data-lang-btn="tr"></button>
+          <button type="button" data-lang-btn="en"></button>
         </div>
       </nav>
     </header>
     <article>
-      <h2>Contact</h2>
-      <p>Sorular, öneriler veya hata bildirimi için Discord sunucumuza katılabilirsiniz.</p>
-      <p><strong>Discord:</strong> <a href="https://discord.gg/VrZCYj7a6q" rel="noopener noreferrer" target="_blank">discord.gg/VrZCYj7a6q</a></p>
-      <p><strong>Fishing calendar:</strong> <a href="/calendar/">Open calendar</a> — Ezel/Barbaros, Marmara/Bagjanamu and Charon/Lucifer/Safir/Star schedules with countdowns.</p>
-      <p class="note">This is an independent fan project and is not an official Metin2 or Gameforge support channel.</p>
+      <h2 data-i18n="title">İletişim</h2>
+      <p data-i18n="p1"></p>
+      <p><strong data-i18n="discord">Discord:</strong> <a href="https://discord.gg/VrZCYj7a6q" rel="noopener noreferrer" target="_blank">discord.gg/VrZCYj7a6q</a></p>
+      <p><strong data-i18n="calLabel">Balıkçılık takvimi:</strong> <a href="/calendar/" data-i18n="calLink">Takvimi aç</a></p>
+      <p class="note" data-i18n="note"></p>
     </article>
     <footer>
       <nav>
-        <a href="/terms/">Terms</a>
-        <a href="/privacy/">Privacy</a>
-        <a href="/cookie-policy/">Cookie Policy</a>
-        <a href="/contact/">Contact</a>
-        <a href="/calendar/">Calendar</a>
+        <a href="/terms/" data-i18n="terms">Terms</a>
+        <a href="/privacy/" data-i18n="privacy">Privacy</a>
+        <a href="/cookie-policy/" data-i18n="cookies">Cookie Policy</a>
+        <a href="/contact/" data-i18n="contact">Contact</a>
+        <a href="/calendar/" data-i18n="calendar">Calendar</a>
       </nav>
-      <p data-i18n="footerNote">Independent fan project. Not affiliated with Metin2 or Gameforge.</p>
+      <p data-i18n="footerNote"></p>
     </footer>
   </div>
 </body>

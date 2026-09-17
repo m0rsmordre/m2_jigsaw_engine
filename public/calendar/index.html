@@ -10,6 +10,7 @@
   <script>
     window.PAGE_I18N = {
       tr: {
+        docTitle: 'Takvim — Balık Yapboz Yardımcısı',
         pageTitle: 'Balıkçılık etkinlik takvimi',
         intro: 'Wiki ve resmi forum takvimlerinden derlenmiştir. Avrupa saatleri TSİ’ye çevrilir. Sayaçlar canlıdır.',
         note: 'Kaynak: Metin2 Wiki / forum — global özel etkinlik duyurusu varsa takvim geçersiz kalabilir.',
@@ -27,6 +28,7 @@
         secUnit: 'saniye',
       },
       en: {
+        docTitle: 'Calendar — Fish Jigsaw Helper',
         pageTitle: 'Fishing event calendar',
         intro: 'Compiled from the Metin2 Wiki and official forum. Europe times are converted to Turkey time (TSİ). Countdowns update live.',
         note: 'Source: Metin2 Wiki / forum — global special events may override this schedule.',
@@ -50,7 +52,7 @@
 <body>
   <div class="wrap">
     <header>
-      <h1><a href="/" style="color:inherit;text-decoration:none">Balık Yapboz Yardımcısı</a></h1>
+      <h1><a href="/" data-i18n="brand">Balık Yapboz Yardımcısı</a></h1>
       <nav>
         <a href="/" data-i18n="navPlay">Oyna</a>
         <a href="/how-to/" data-i18n="navHowTo">Nasıl oynanır?</a>
@@ -59,8 +61,8 @@
         <a href="/about/" data-i18n="navAbout">Hakkımızda</a>
         <a href="/contact/" data-i18n="navContact">İletişim</a>
         <div class="lang-switch" role="group" aria-label="Language">
-          <button type="button" data-lang-btn="tr">TR</button>
-          <button type="button" data-lang-btn="en">EN</button>
+          <button type="button" data-lang-btn="tr"></button>
+          <button type="button" data-lang-btn="en"></button>
         </div>
       </nav>
     </header>
