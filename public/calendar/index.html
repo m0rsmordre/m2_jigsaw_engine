@@ -4,148 +4,185 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fishing Calendar — Balık Yapboz Yardımcısı</title>
-  <meta name="description" content="Metin2 fishing event calendar for Ezel/Barbaros, Marmara/Bagjanamu, Charon/Lucifer/Safir/Star with Turkey time and countdowns." />
+  <meta name="description" content="Next Fish Jigsaw fishing events for Ezel/Barbaros, Marmara/Bagjanamu, Charon servers with live countdowns in TR/EN." />
   <link rel="icon" type="image/png" href="/favicon.png" />
   <link rel="stylesheet" href="/site.css" />
+  <script>
+    window.PAGE_I18N = {
+      tr: {
+        pageTitle: 'Balıkçılık etkinlik takvimi',
+        intro: 'Wiki ve resmi forum takvimlerinden derlenmiştir. Avrupa saatleri TSİ’ye çevrilir. Sayaçlar canlıdır.',
+        note: 'Kaynak: Metin2 Wiki / forum — global özel etkinlik duyurusu varsa takvim geçersiz kalabilir.',
+        ezelTitle: 'Ezel / Barbaros',
+        marmaraTitle: 'Marmara / Bagjanamu',
+        charonTitle: 'Charon / Lucifer / Safir / Star',
+        nextTitle: 'Next Fishing Jigsaw',
+        empty: 'Yaklaşan balıkçılık etkinliği bulunamadı.',
+        untilStart: 'sonra etkinlik başlayacak',
+        untilEnd: 'sonra etkinlik bitecek',
+        ended: 'Etkinlik bitti',
+        dayUnit: 'gün',
+        hourUnit: 'saat',
+        minUnit: 'dakika',
+        secUnit: 'saniye',
+      },
+      en: {
+        pageTitle: 'Fishing event calendar',
+        intro: 'Compiled from the Metin2 Wiki and official forum. Europe times are converted to Turkey time (TSİ). Countdowns update live.',
+        note: 'Source: Metin2 Wiki / forum — global special events may override this schedule.',
+        ezelTitle: 'Ezel / Barbaros',
+        marmaraTitle: 'Marmara / Bagjanamu',
+        charonTitle: 'Charon / Lucifer / Safir / Star',
+        nextTitle: 'Next Fishing Jigsaw',
+        empty: 'No upcoming fishing events found.',
+        untilStart: 'until the event starts',
+        untilEnd: 'until the event ends',
+        ended: 'Event ended',
+        dayUnit: 'd',
+        hourUnit: 'h',
+        minUnit: 'm',
+        secUnit: 's',
+      },
+    }
+  </script>
+  <script src="/lang.js" defer></script>
 </head>
 <body>
   <div class="wrap">
     <header>
       <h1><a href="/" style="color:inherit;text-decoration:none">Balık Yapboz Yardımcısı</a></h1>
       <nav>
-        <a href="/">Play</a>
-        <a href="/how-to/">How to</a>
-        <a href="/rules/">Rules</a>
-        <a href="/calendar/">Calendar</a>
-        <a href="/about/">About</a>
-        <a href="/contact/">Contact</a>
+        <a href="/" data-i18n="navPlay">Oyna</a>
+        <a href="/how-to/" data-i18n="navHowTo">Nasıl oynanır?</a>
+        <a href="/rules/" data-i18n="navRules">Kurallar</a>
+        <a href="/calendar/" data-i18n="navCalendar">Takvim</a>
+        <a href="/about/" data-i18n="navAbout">Hakkımızda</a>
+        <a href="/contact/" data-i18n="navContact">İletişim</a>
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" data-lang-btn="tr">TR</button>
+          <button type="button" data-lang-btn="en">EN</button>
+        </div>
       </nav>
     </header>
 
     <article>
-      <h2>Fishing event calendar</h2>
-      <p>Public schedule compiled from the Metin2 Wiki event calendar. Europe times are converted to Turkey time (TSİ). Countdowns update live in your browser.</p>
-      <p class="note">Source: tr-wiki.metin2.gameforge.com — official global events may override these times.</p>
+      <h2 data-i18n="pageTitle">Balıkçılık etkinlik takvimi</h2>
+      <p data-i18n="intro"></p>
+      <p class="note" data-i18n="note"></p>
     </article>
 
     <article>
-      <h2>Ezel / Barbaros — upcoming fishing</h2>
-      <p class="muted">Times published in TSİ. Only events that have not ended yet are listed.</p>
+      <h2 data-i18n="ezelTitle">Ezel / Barbaros</h2>
+      <h3 data-i18n="nextTitle">Next Fishing Jigsaw</h3>
       <div id="ezel-list"></div>
-      <noscript>
-        <table>
-          <thead><tr><th>Event</th><th>Date</th><th>Duration (TSİ)</th></tr></thead>
-          <tbody>
-            <tr><td class="fish">Balıkçılık</td><td>4 Ekim 2026 Pazar</td><td>4 Saat (21:00 – 01:00 TSİ)</td></tr>
-            <tr><td class="fish">Balıkçılık</td><td>1 Kasım 2026 Pazar</td><td>4 Saat (22:00 – 02:00 TSİ)</td></tr>
-          </tbody>
-        </table>
-      </noscript>
     </article>
 
     <article>
-      <h2>Marmara / Bagjanamu — upcoming (published March 2026 calendar)</h2>
-      <p class="muted">Wiki published a March 2026 day calendar (Europe). Slots: 16:00–20:00 and 20:00–24:00 CET/CEST. Future rows after “now” are shown below.</p>
+      <h2 data-i18n="marmaraTitle">Marmara / Bagjanamu</h2>
+      <h3 data-i18n="nextTitle">Next Fishing Jigsaw</h3>
       <div id="marmara-list"></div>
-      <noscript>
-        <p>Enable JavaScript to filter future Marmara events. March 2026 fishing slots were: 8 Mar 16:00–20:00, 14 Mar 20:00–24:00, 28 Mar 16:00–20:00 (Europe).</p>
-      </noscript>
     </article>
 
     <article>
-      <h2>Charon / Lucifer / Safir / Star — fixed weekly schedule</h2>
-      <p class="muted">Europe local time. TSİ ≈ Europe +1h in summer (CEST), +2h in winter (CET).</p>
-      <table>
-        <thead>
-          <tr>
-            <th>Day</th>
-            <th>02:00–14:00 (12h)</th>
-            <th>14:00–18:00 (4h)</th>
-            <th>18:00–22:00 (4h)</th>
-            <th>22:00–02:00 (4h)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>Monday</td><td>Münzevi Tavsiyesi</td><td>Yeşil Ejderha Fasulyesi</td><td>Kutsama Kağıdı</td><td>Nugget</td></tr>
-          <tr><td>Tuesday</td><td>Güneş Özütü</td><td>Cor Draconis</td><td>Küçük Kutsama</td><td>Nesneyi Efsunla</td></tr>
-          <tr><td>Wednesday</td><td class="fish">Balıkçılık Etkinliği</td><td>Kutsama Küresi</td><td>Münzevi Tavsiyesi</td><td>Süper Taş</td></tr>
-          <tr><td>Thursday</td><td>Ay Özütü</td><td>Küçük Kutsama</td><td>Cor Draconis</td><td>Arttırma Kağıdı</td></tr>
-          <tr><td>Friday</td><td>Yeşil Ejderha Fasulyesi</td><td>Nesneyi Efsunla</td><td>Süper Taş</td><td>Cor Draconis</td></tr>
-          <tr><td>Saturday</td><td>Kutsama Kağıdı</td><td class="fish">Balıkçılık Etkinliği</td><td>Robin (Yağma) (1 Gün)</td><td>Ay Işığı</td></tr>
-          <tr><td>Sunday</td><td>Kötü Ruh Kovma Kağıdı</td><td>Arttırma Kağıdı</td><td>Kötü Ruh Kovma Kağıdı</td><td>Liderin Kitabı</td></tr>
-        </tbody>
-      </table>
-      <h3>Next fishing windows (with countdown)</h3>
+      <h2 data-i18n="charonTitle">Charon / Lucifer / Safir / Star</h2>
+      <h3 data-i18n="nextTitle">Next Fishing Jigsaw</h3>
       <div id="charon-list"></div>
     </article>
 
     <footer>
       <nav>
-        <a href="/terms/">Terms</a>
-        <a href="/privacy/">Privacy</a>
-        <a href="/cookie-policy/">Cookie Policy</a>
-        <a href="/contact/">Contact</a>
-        <a href="/calendar/">Calendar</a>
+        <a href="/terms/" data-i18n="terms">Terms</a>
+        <a href="/privacy/" data-i18n="privacy">Privacy</a>
+        <a href="/cookie-policy/" data-i18n="cookies">Cookie Policy</a>
+        <a href="/contact/" data-i18n="contact">Contact</a>
+        <a href="/calendar/" data-i18n="calendar">Calendar</a>
       </nav>
-      <p>Independent fan project. Not affiliated with Metin2 or Gameforge.</p>
+      <p data-i18n="footerNote"></p>
     </footer>
   </div>
 
   <script>
   (function () {
-    var IST = 'Europe/Istanbul';
-    var BER = 'Europe/Berlin';
+    var IST = 'Europe/Istanbul'
+    var BER = 'Europe/Berlin'
+    var MAX = 2
 
     function europeLocalToDate(y, m, d, hour, minute) {
       var fmt = new Intl.DateTimeFormat('en-US', {
         timeZone: BER, year: 'numeric', month: '2-digit', day: '2-digit',
         hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
-      });
-      var t = Date.UTC(y, m - 1, d, hour, minute || 0);
+      })
+      var t = Date.UTC(y, m - 1, d, hour, minute || 0)
       for (var i = 0; i < 6; i++) {
-        var parts = {};
+        var parts = {}
         fmt.formatToParts(new Date(t)).forEach(function (p) {
-          if (p.type !== 'literal') parts[p.type] = p.value;
-        });
-        var got = Date.UTC(+parts.year, +parts.month - 1, +parts.day, +parts.hour, +parts.minute);
-        var want = Date.UTC(y, m - 1, d, hour, minute || 0);
-        t += want - got;
+          if (p.type !== 'literal') parts[p.type] = p.value
+        })
+        var got = Date.UTC(+parts.year, +parts.month - 1, +parts.day, +parts.hour, +parts.minute)
+        var want = Date.UTC(y, m - 1, d, hour, minute || 0)
+        t += want - got
       }
-      return new Date(t);
+      return new Date(t)
     }
 
-    function fmtRange(start, end) {
-      var day = new Intl.DateTimeFormat('tr-TR', {
+    function berlinYmd(d) {
+      var fmt = new Intl.DateTimeFormat('en-US', {
+        timeZone: BER, year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'short'
+      })
+      var parts = {}
+      fmt.formatToParts(d).forEach(function (p) {
+        if (p.type !== 'literal') parts[p.type] = p.value
+      })
+      return { y: +parts.year, m: +parts.month, day: +parts.day, wd: parts.weekday }
+    }
+
+    function fmtRange(start, end, lang) {
+      var loc = lang === 'en' ? 'en-GB' : 'tr-TR'
+      var day = new Intl.DateTimeFormat(loc, {
         timeZone: IST, weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
-      }).format(start);
-      var tf = new Intl.DateTimeFormat('tr-TR', {
+      }).format(start)
+      var tf = new Intl.DateTimeFormat(loc, {
         timeZone: IST, hour: '2-digit', minute: '2-digit', hour12: false
-      });
-      return day + ' · ' + tf.format(start) + ' – ' + tf.format(end) + ' TSİ';
+      })
+      return day + ' · ' + tf.format(start) + ' – ' + tf.format(end) + ' TSİ'
     }
 
-    function countdown(start, end, now) {
-      var mode, target;
-      if (now < start) { mode = 'start'; target = start; }
-      else if (now < end) { mode = 'end'; target = end; }
-      else return 'Etkinlik bitti';
-      var s = Math.max(0, Math.floor((target - now) / 1000));
-      var days = Math.floor(s / 86400);
-      var hours = Math.floor((s % 86400) / 3600);
-      var mins = Math.floor((s % 3600) / 60);
-      var secs = s % 60;
-      var body = days + ' gün ' + hours + ' saat ' + mins + ' dakika ' + secs + ' saniye';
-      return mode === 'start'
-        ? body + ' sonra etkinlik başlayacak'
-        : body + ' sonra etkinlik bitecek';
+    function t(lang, key) {
+      return (window.PAGE_I18N[lang] && window.PAGE_I18N[lang][key]) || key
     }
 
-    function card(title, start, end, now) {
-      return '<div class="card" style="padding:0.85rem;margin:0.5rem 0">' +
+    function countdownText(start, end, now, lang) {
+      var mode, target
+      if (now < start) { mode = 'start'; target = start }
+      else if (now < end) { mode = 'end'; target = end }
+      else return t(lang, 'ended')
+      var s = Math.max(0, Math.floor((target - now) / 1000))
+      var days = Math.floor(s / 86400)
+      var hours = Math.floor((s % 86400) / 3600)
+      var mins = Math.floor((s % 3600) / 60)
+      var secs = s % 60
+      if (lang === 'en') {
+        var body = days + t(lang, 'dayUnit') + ' ' + hours + t(lang, 'hourUnit') + ' ' + mins + t(lang, 'minUnit') + ' ' + secs + t(lang, 'secUnit')
+        return body + ' ' + t(lang, mode === 'start' ? 'untilStart' : 'untilEnd')
+      }
+      var bodyTr = days + ' ' + t(lang, 'dayUnit') + ' ' + hours + ' ' + t(lang, 'hourUnit') + ' ' + mins + ' ' + t(lang, 'minUnit') + ' ' + secs + ' ' + t(lang, 'secUnit')
+      return bodyTr + ' ' + t(lang, mode === 'start' ? 'untilStart' : 'untilEnd')
+    }
+
+    function cardHtml(title, start, end, now, lang) {
+      return '<div class="event-card">' +
         '<div><strong class="fish">' + title + '</strong></div>' +
-        '<div class="muted">' + fmtRange(start, end) + '</div>' +
+        '<div class="muted">' + fmtRange(start, end, lang) + '</div>' +
         '<div class="countdown" data-start="' + start.getTime() + '" data-end="' + end.getTime() + '">' +
-        countdown(start.getTime(), end.getTime(), now) + '</div></div>';
+        countdownText(start.getTime(), end.getTime(), now, lang) + '</div></div>'
+    }
+
+    function fill(el, items, now, lang) {
+      var html = ''
+      items.slice(0, MAX).forEach(function (it) {
+        html += cardHtml(it.title, it.start, it.end, now, lang)
+      })
+      el.innerHTML = html || '<p class="muted">' + t(lang, 'empty') + '</p>'
     }
 
     var ezel = [
@@ -158,107 +195,107 @@
       ['2026-09-06T21:00:00+03:00', '2026-09-07T01:00:00+03:00'],
       ['2026-10-04T21:00:00+03:00', '2026-10-05T01:00:00+03:00'],
       ['2026-11-01T22:00:00+03:00', '2026-11-02T02:00:00+03:00']
-    ];
+    ]
 
-    var marmara = [
-      ['2026-03-01','Arttırma Kağıdı','Nesneyi Efsunla'],
-      ['2026-03-02','Nugget','SüperTaş'],
-      ['2026-03-03','Münzevi Tavsiyesi','Yeşil Ejderha Fasülyesi'],
-      ['2026-03-04','Kötü Ruh Kovma Kağıdı','Cor Draconis'],
-      ['2026-03-05','İnce Kumaş','Muffin'],
-      ['2026-03-06','Kutsama Kağıdı','Küçük Kutsama'],
-      ['2026-03-07','Pet Kitabı Sandığı','Kırmızı Abanoz Sandık'],
-      ['2026-03-08','Balıkçılık','Kutsama Küresi'],
-      ['2026-03-09','Geçit Bileti','Yeşil Ejderha Fasülyesi'],
-      ['2026-03-10','SüperTaş','Cor Draconis'],
-      ['2026-03-11','İnce Kumaş','Nugget'],
-      ['2026-03-12','Münzevi Tavsiyesi','Kötü Ruh Kovma Kağıdı'],
-      ['2026-03-13','Kutsama Kağıdı','Küçük Kutsama'],
-      ['2026-03-14','Işınlanma Yüzüğü','Balıkçılık'],
-      ['2026-03-15','Arttırma Kağıdı','Kırmızı Abanoz Sandık'],
-      ['2026-03-16','Muffin','Cor Draconis'],
-      ['2026-03-17','Yeşil Ejderha Fasülyesi','SüperTaş'],
-      ['2026-03-18','İnce Kumaş','Kötü Ruh Kovma Kağıdı'],
-      ['2026-03-19','Cor Draconis','Münzevi Tavsiyesi'],
-      ['2026-03-20','Kutsama Kağıdı','Küçük Kutsama'],
-      ['2026-03-21','Arttırma Kağıdı','Ay Işığı'],
-      ['2026-03-22','Nesneyi Efsunla','Envanter Genişletme'],
-      ['2026-03-23','Geçit Bileti','Yeşil Ejderha Fasülyesi'],
-      ['2026-03-24','SüperTaş','Cor Draconis'],
-      ['2026-03-25','İnce Kumaş','Nugget'],
-      ['2026-03-26','Münzevi Tavsiyesi','Kötü Ruh Kovma Kağıdı'],
-      ['2026-03-27','Kutsama Kağıdı','Küçük Kutsama'],
-      ['2026-03-28','Balıkçılık','Işınlanma Yüzüğü'],
-      ['2026-03-29','Kırmızı Abanoz Sandık','Ejderha Alevi'],
-      ['2026-03-30','İnce Kumaş','Cor Draconis'],
-      ['2026-03-31','Kötü Ruh Kovma Kağıdı','SüperTaş']
-    ];
+    // Marmara fishing only (Europe slots). Sep 2026 forum + March wiki leftovers.
+    var marmaraFish = [
+      { date: '2026-03-08', slot: 1 },
+      { date: '2026-03-14', slot: 2 },
+      { date: '2026-03-28', slot: 1 },
+      { date: '2026-09-05', slot: 2 },
+      { date: '2026-09-13', slot: 2 },
+      { date: '2026-09-20', slot: 1 }
+    ]
 
-    function berlinYmd(d) {
-      var fmt = new Intl.DateTimeFormat('en-US', {
-        timeZone: BER, year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'short'
-      });
-      var parts = {};
-      fmt.formatToParts(d).forEach(function (p) {
-        if (p.type !== 'literal') parts[p.type] = p.value;
-      });
-      return { y: +parts.year, m: +parts.month, day: +parts.day, wd: parts.weekday };
+    function upcomingCharon(now, lang) {
+      var out = []
+      var seen = {}
+      for (var i = 0; i < 90 && out.length < MAX; i++) {
+        var probe = new Date(now + i * 86400000)
+        var b = berlinYmd(probe)
+        var key = b.y + '-' + b.m + '-' + b.day
+        if (seen[key]) continue
+        if (b.wd === 'Wed') {
+          seen[key] = 1
+          var ws = europeLocalToDate(b.y, b.m, b.day, 2, 0)
+          var we = europeLocalToDate(b.y, b.m, b.day, 14, 0)
+          if (we.getTime() > now) {
+            out.push({
+              title: lang === 'en'
+                ? 'Fishing — Wednesday 02:00–14:00 Europe'
+                : 'Balıkçılık — Çarşamba 02:00–14:00 Avrupa',
+              start: ws,
+              end: we
+            })
+          }
+        } else if (b.wd === 'Sat') {
+          seen[key] = 1
+          var ss = europeLocalToDate(b.y, b.m, b.day, 14, 0)
+          var se = europeLocalToDate(b.y, b.m, b.day, 18, 0)
+          if (se.getTime() > now) {
+            out.push({
+              title: lang === 'en'
+                ? 'Fishing — Saturday 14:00–18:00 Europe'
+                : 'Balıkçılık — Cumartesi 14:00–18:00 Avrupa',
+              start: ss,
+              end: se
+            })
+          }
+        }
+      }
+      return out.sort(function (a, b) { return a.start - b.start })
+    }
+
+    function upcomingEzel(now, lang) {
+      var label = lang === 'en' ? 'Fishing' : 'Balıkçılık'
+      return ezel.map(function (pair) {
+        return { title: label, start: new Date(pair[0]), end: new Date(pair[1]) }
+      }).filter(function (e) { return e.end.getTime() > now })
+        .sort(function (a, b) { return a.start - b.start })
+    }
+
+    function upcomingMarmara(now, lang) {
+      return marmaraFish.map(function (row) {
+        var p = row.date.split('-').map(Number)
+        var h0 = row.slot === 1 ? 16 : 20
+        var start = europeLocalToDate(p[0], p[1], p[2], h0, 0)
+        var end = row.slot === 1
+          ? europeLocalToDate(p[0], p[1], p[2], 20, 0)
+          : new Date(europeLocalToDate(p[0], p[1], p[2], 0, 0).getTime() + 86400000)
+        var eu = row.slot === 1 ? '16:00–20:00' : '20:00–24:00'
+        return {
+          title: lang === 'en'
+            ? 'Fishing — ' + eu + ' Europe'
+            : 'Balıkçılık — ' + eu + ' Avrupa',
+          start: start,
+          end: end
+        }
+      }).filter(function (e) { return e.end.getTime() > now })
+        .sort(function (a, b) { return a.start - b.start })
     }
 
     function render() {
-      var now = Date.now();
-      var ezelHtml = '';
-      ezel.forEach(function (pair) {
-        var s = new Date(pair[0]); var e = new Date(pair[1]);
-        if (e.getTime() > now) ezelHtml += card('Balıkçılık — Ezel / Barbaros', s, e, now);
-      });
-      document.getElementById('ezel-list').innerHTML = ezelHtml || '<p class="muted">Yaklaşan Ezel/Barbaros balıkçılık etkinliği yok.</p>';
-
-      var marHtml = '';
-      marmara.forEach(function (row) {
-        var p = row[0].split('-').map(Number);
-        var s1 = europeLocalToDate(p[0], p[1], p[2], 16, 0);
-        var e1 = europeLocalToDate(p[0], p[1], p[2], 20, 0);
-        var s2 = europeLocalToDate(p[0], p[1], p[2], 20, 0);
-        var e2 = new Date(europeLocalToDate(p[0], p[1], p[2], 0, 0).getTime() + 86400000);
-        if (e1.getTime() > now) marHtml += card(row[1] + ' — Marmara / Bagjanamu', s1, e1, now);
-        if (e2.getTime() > now) marHtml += card(row[2] + ' — Marmara / Bagjanamu', s2, e2, now);
-      });
-      document.getElementById('marmara-list').innerHTML = marHtml ||
-        '<p class="muted">Yayımlanan Mart 2026 takviminde bugünden sonra kalan etkinlik yok. Yeni ay takvimi wiki’de yayınlanınca güncellenecek.</p>';
-
-      var charon = [];
-      var seen = {};
-      for (var i = 0; i < 90 && charon.length < 10; i++) {
-        var probe = new Date(now + i * 86400000);
-        var b = berlinYmd(probe);
-        var key = b.y + '-' + b.m + '-' + b.day;
-        if (seen[key]) continue;
-        if (b.wd === 'Wed') {
-          seen[key] = 1;
-          var ws = europeLocalToDate(b.y, b.m, b.day, 2, 0);
-          var we = europeLocalToDate(b.y, b.m, b.day, 14, 0);
-          if (we.getTime() > now) charon.push(['Balıkçılık — Çarşamba 02:00–14:00 Avrupa', ws, we]);
-        } else if (b.wd === 'Sat') {
-          seen[key] = 1;
-          var ss = europeLocalToDate(b.y, b.m, b.day, 14, 0);
-          var se = europeLocalToDate(b.y, b.m, b.day, 18, 0);
-          if (se.getTime() > now) charon.push(['Balıkçılık — Cumartesi 14:00–18:00 Avrupa', ss, se]);
-        }
-      }
-      var chHtml = '';
-      charon.forEach(function (c) { chHtml += card(c[0], c[1], c[2], now); });
-      document.getElementById('charon-list').innerHTML = chHtml;
+      var lang = (window.FJLang && window.FJLang.get()) || 'tr'
+      var now = Date.now()
+      fill(document.getElementById('ezel-list'), upcomingEzel(now, lang), now, lang)
+      fill(document.getElementById('marmara-list'), upcomingMarmara(now, lang), now, lang)
+      fill(document.getElementById('charon-list'), upcomingCharon(now, lang), now, lang)
     }
 
-    render();
-    setInterval(function () {
-      var now = Date.now();
+    function tick() {
+      var lang = (window.FJLang && window.FJLang.get()) || 'tr'
+      var now = Date.now()
       document.querySelectorAll('.countdown').forEach(function (el) {
-        el.textContent = countdown(+el.getAttribute('data-start'), +el.getAttribute('data-end'), now);
-      });
-    }, 1000);
-  })();
+        el.textContent = countdownText(+el.getAttribute('data-start'), +el.getAttribute('data-end'), now, lang)
+      })
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      render()
+      setInterval(tick, 1000)
+    })
+    window.addEventListener('fj-lang', render)
+  })()
   </script>
 </body>
 </html>
