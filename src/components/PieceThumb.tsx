@@ -1,5 +1,6 @@
-import { PIECE_NAMES } from '../lib/pieces'
 import { pieceImg } from '../lib/pieceAssets'
+import { pieceLabel } from '../i18n'
+import { useLang } from '../hooks/useLang'
 
 type Props = {
   pieceId: number
@@ -9,7 +10,8 @@ type Props = {
 }
 
 export function PieceThumb({ pieceId, className = '', size = 48 }: Props) {
-  const name = PIECE_NAMES[pieceId] ?? `piece_${pieceId}`
+  const { lang } = useLang()
+  const name = pieceLabel(lang, pieceId)
   return (
     <span
       className={`inline-flex shrink-0 items-center justify-center overflow-hidden ${className}`}

@@ -1,4 +1,5 @@
-import { actionLabel, PIECE_NAMES } from '../lib/pieces'
+import { actionLabel } from '../lib/pieces'
+import { pieceLabel } from '../i18n'
 import type { Scenario } from '../lib/tablebase/Tablebase'
 import { projectedMoves } from '../lib/chest'
 import { useLang } from '../hooks/useLang'
@@ -49,13 +50,13 @@ export function ScenarioList({ scenarios, turn, onPick }: Props) {
                 {Number.isFinite(finish) && <ChestBadge moves={finish} compact />}
               </div>
               <div className="mt-0.5 truncate text-xs text-slate-400">
-                {d.needPiece}: {PIECE_NAMES[sc.nextPieceId]}
+                {d.needPiece}: {pieceLabel(lang, sc.nextPieceId)}
               </div>
             </div>
             <div className="shrink-0 text-right text-sm font-bold text-sky-300">
               {actionLabel(sc.nextAction)}
               <div className="text-[0.65rem] font-medium text-slate-500">
-                {lang === 'tr' ? 'sonraki' : 'next'}
+                {lang === 'tr' ? 'sonraki' : lang === 'de' ? 'nächste' : 'next'}
               </div>
             </div>
           </button>

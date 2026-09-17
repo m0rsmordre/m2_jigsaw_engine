@@ -1,4 +1,6 @@
 import { PIECE_NAMES } from '../lib/pieces'
+import { pieceLabel } from '../i18n'
+import { useLang } from '../hooks/useLang'
 import { PieceThumb } from './PieceThumb'
 
 type Props = {
@@ -8,10 +10,12 @@ type Props = {
 }
 
 export function PiecePicker({ piece, deluxeLeft, onSelect }: Props) {
+  const { lang } = useLang()
   return (
     <div className="flex flex-wrap gap-2">
-      {PIECE_NAMES.map((name, p) => {
+      {PIECE_NAMES.map((_, p) => {
         const off = p === 6 && deluxeLeft <= 0
+        const name = pieceLabel(lang, p)
         return (
           <button
             key={p}

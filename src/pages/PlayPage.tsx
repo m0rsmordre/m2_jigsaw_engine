@@ -6,7 +6,8 @@ import { PieceThumb } from '../components/PieceThumb'
 import { ScenarioList } from '../components/ScenarioList'
 import { useLang } from '../hooks/useLang'
 import { projectedMoves } from '../lib/chest'
-import { actionLabel, FULL, MASKS, PIECE_NAMES, SKIP } from '../lib/pieces'
+import { actionLabel, FULL, MASKS, SKIP } from '../lib/pieces'
+import { pieceLabel } from '../i18n'
 import type { Scenario } from '../lib/tablebase/Tablebase'
 import { useTablebase } from '../lib/tablebase/useTablebase'
 
@@ -19,7 +20,7 @@ type Snap = {
 }
 
 export function PlayPage() {
-  const { d } = useLang()
+  const { d, lang } = useLang()
   const [board, setBoard] = useState(0)
   const [piece, setPiece] = useState(1)
   const [deluxe, setDeluxe] = useState(4)
@@ -81,8 +82,8 @@ export function PlayPage() {
   const passReason = forcePass ? 'no_fit' : result?.passReason
   const waitPieceId = result?.waitPieceId ?? result?.scenarios?.[0]?.nextPieceId
   const waitPieceName =
-    waitPieceId !== undefined && waitPieceId >= 0 && waitPieceId < PIECE_NAMES.length
-      ? PIECE_NAMES[waitPieceId]
+    waitPieceId !== undefined && waitPieceId >= 0
+      ? pieceLabel(lang, waitPieceId)
       : null
   const passHint =
     recommendPass && passReason === 'regret'

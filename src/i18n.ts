@@ -49,6 +49,7 @@ const dict = {
     movesLabel: 'hamle',
     remainingLabel: 'kalan',
     needPiece: 'Gerekli taş',
+    pieceNames: ['Tekli', 'Cubuk', 'L', 'Ters L', 'Kare', 'S', 'Deluxe'],
     projectedChest: 'Tahmini sandık',
     chestB: 'Altın Balık Sandığı (B)',
     chestO: 'Altın Balık Sandığı (O)',
@@ -131,6 +132,7 @@ const dict = {
     movesLabel: 'moves',
     remainingLabel: 'left',
     needPiece: 'Needed piece',
+    pieceNames: ['Single', 'Bar', 'L', 'Reverse L', 'Square', 'S', 'Deluxe'],
     projectedChest: 'Projected chest',
     chestB: 'Golden Fish Chest (B)',
     chestO: 'Golden Fish Chest (M)',
@@ -213,6 +215,7 @@ const dict = {
     movesLabel: 'Züge',
     remainingLabel: 'übrig',
     needPiece: 'Benötigter Stein',
+    pieceNames: ['Einzel', 'Stab', 'L', 'Umgekehrtes L', 'Quadrat', 'S', 'Deluxe'],
     projectedChest: 'Geschätzte Truhe',
     chestB: 'Goldene Fischtruhe (G)',
     chestO: 'Goldene Fischtruhe (M)',
@@ -253,4 +256,11 @@ export type Dict = (typeof dict)[Lang]
 
 export function t(lang: Lang): Dict {
   return dict[lang]
+}
+
+/** Yerelleştirilmiş taş adı (0–6). */
+export function pieceLabel(lang: Lang, pieceId: number): string {
+  const names = dict[lang].pieceNames
+  if (pieceId >= 0 && pieceId < names.length) return names[pieceId]
+  return `piece_${pieceId}`
 }
