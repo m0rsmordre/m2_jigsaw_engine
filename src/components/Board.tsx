@@ -1,4 +1,4 @@
-import { ACTIONS, COLS, MASKS, ROWS } from '../lib/pieces'
+import { ACTIONS, COLS, MASKS, ROWS, resolvePlacementAction } from '../lib/pieces'
 import { PIECE_COLORS } from '../lib/pieceAssets'
 
 export type Placement = { figure: number; action: number }
@@ -72,9 +72,15 @@ export function Board({
             isBest && !filled ? 'ring-2 ring-emerald-400 shadow-[0_0_14px_rgba(16,185,129,.35)]' : '',
             isPrev && !filled ? (illegal ? 'bg-rose-500/45' : 'bg-sky-300/35') : '',
           ].join(' ')}
-          onMouseEnter={() => onHover(a)}
+          onMouseEnter={() => {
+            const resolved = resolvePlacementAction(board, piece, a, bestAction)
+            onHover(resolved)
+          }}
           onMouseLeave={() => onHover(null)}
-          onClick={() => onPlace(a)}
+          onClick={() => {
+            const resolved = resolvePlacementAction(board, piece, a, bestAction)
+            if (resolved !== null) onPlace(resolved)
+          }}
         />,
       )
     }

@@ -62,3 +62,44 @@ export function maskToAction(figure: number, mask: number): number {
   }
   return SKIP
 }
+
+/** Tıklanan/hover hücrenin bit'ini örten yasal yerleşimler (action = sol-üst origin). */
+export function actionsCoveringCell(
+  board: number,
+  figure: number,
+  cellAction: number,
+): number[] {
+  if (cellAction < 0 || cellAction >= ACTIONS) return []
+  const bit = 1 << (23 - cellAction)
+  if (board & bit) return []
+  const masks = MASKS[figure]
+  const out: number[] = []
+  for (let a = 0; a < ACTIONS; a++) {
+    const m = masks[a]
+    if (m !== -1 && (m & bit) !== 0 && (board & m) === 0) out.push(a)
+  }
+  return out
+}
+
+/**
+ * Hücreye tıklayınca/hover'da kullanılacak origin action.
+ * Birden fazla aday varsa preferAction (önerilen hamle) öncelikli.
+ */
+export function resolvePlacementAction(
+  board: number,
+  figure: number,
+  cellAction: number,
+  preferAction?: number | null,
+): number | null {
+  const cands = actionsCoveringCell(board, figure, cellAction)
+  if (!cands.length) return null
+  if (
+    preferAction != null &&
+    preferAction >= 0 &&
+    preferAction < ACTIONS &&
+    cands.includes(preferAction)
+  ) {
+    return preferAction
+  }
+  return cands[0]
+}

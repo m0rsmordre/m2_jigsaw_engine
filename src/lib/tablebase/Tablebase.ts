@@ -287,32 +287,92 @@ export class Tablebase {
     return results
   }
 
+  /** Elindeki taş, en kısa (minRemaining) tiling'lerin kalan parçalarından biri mi? */
+  figureOnShortestPaths(
+    board: number,
+    figure: number,
+    deluxeLeft = 99,
+  ): boolean {
+    const { minRemaining: globalMin } = this.aliveStats(board, deluxeLeft)
+    if (globalMin < 0) return false
+
+    if (board === 0) {
+      for (let idx = 0; idx < this.nTilings; idx++) {
+        if (!this.fitsDeluxeStock(idx, 0, deluxeLeft)) continue
+        if (this.lengths[idx] !== globalMin) continue
+        const base = this.offsets[idx]
+        const ln = this.lengths[idx]
+        for (let j = 0; j < ln; j++) {
+          if (this.flatPids[base + j] === figure) return true
+        }
+      }
+      return false
+    }
+
+    const active = this.updateActive(board)
+    for (const idx of active) {
+      if (!this.fitsDeluxeStock(idx, board, deluxeLeft)) continue
+      const ln = this.lengths[idx]
+      const placed = this.placedCount(idx, board)
+      if (ln - placed !== globalMin) continue
+      const base = this.offsets[idx]
+      for (let j = 0; j < ln; j++) {
+        const m = this.flatMasks[base + j]
+        if (m & board) continue
+        if (this.flatPids[base + j] === figure) return true
+      }
+    }
+    return false
+  }
+
   recommend(
     board: number,
     figure: number,
     opts?: { deluxeLeft?: number },
-  ): { action: number; expected: number } {
+  ): { action: number; expected: number; passReason?: 'no_fit' | 'regret' } {
     const deluxeLeft = opts?.deluxeLeft ?? 99
+    const { minRemaining: globalMin } = this.aliveStats(board, deluxeLeft)
+    const passExpected =
+      globalMin >= 0 ? globalMin + 1 : Infinity // +1: çöp at turu sandığa sayılır
+
     if (figure === 6 && deluxeLeft <= 0) {
-      const { minRemaining } = this.aliveStats(board, deluxeLeft)
-      return { action: SKIP, expected: minRemaining >= 0 ? minRemaining : Infinity }
+      return { action: SKIP, expected: passExpected, passReason: 'no_fit' }
     }
+
     const evals = this.evaluatePlacements(board, figure, deluxeLeft)
+    const hasLegal = evals.some((ev) => ev.surviving > 0 && ev.action !== SKIP)
+
+    // Daha kısa gidişat var ve elindeki taş o gidişatlarda yok → PAS
+    if (globalMin >= 0 && !this.figureOnShortestPaths(board, figure, deluxeLeft)) {
+      return {
+        action: SKIP,
+        expected: passExpected,
+        passReason: hasLegal ? 'regret' : 'no_fit',
+      }
+    }
+
+    // Sadece en kısa yolu koruyan yerleşimler (kalan = globalMin - 1)
     let best: PlacementScore | null = null
     for (const ev of evals) {
       if (ev.surviving <= 0 || ev.action === SKIP) continue
+      if (globalMin >= 0 && ev.minRemaining !== globalMin - 1) continue
       if (
         !best ||
-        ev.minRemaining < best.minRemaining ||
-        (ev.minRemaining === best.minRemaining && ev.weightSum > best.weightSum)
+        ev.weightSum > best.weightSum ||
+        (ev.weightSum === best.weightSum && ev.action < best.action)
       ) {
         best = ev
       }
     }
+
     if (!best) {
-      const { minRemaining } = this.aliveStats(board, deluxeLeft)
-      return { action: SKIP, expected: minRemaining >= 0 ? minRemaining : Infinity }
+      return {
+        action: SKIP,
+        expected: passExpected,
+        passReason: hasLegal ? 'regret' : 'no_fit',
+      }
     }
+
     return { action: best.action, expected: best.minRemaining + 1 }
   }
 

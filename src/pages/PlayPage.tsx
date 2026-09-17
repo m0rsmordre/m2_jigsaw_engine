@@ -6,7 +6,7 @@ import { PieceThumb } from '../components/PieceThumb'
 import { ScenarioList } from '../components/ScenarioList'
 import { useLang } from '../hooks/useLang'
 import { projectedMoves } from '../lib/chest'
-import { actionLabel, FULL, MASKS, SKIP } from '../lib/pieces'
+import { actionLabel, FULL, MASKS, PIECE_NAMES, SKIP } from '../lib/pieces'
 import type { Scenario } from '../lib/tablebase/Tablebase'
 import { useTablebase } from '../lib/tablebase/useTablebase'
 
@@ -60,18 +60,54 @@ export function PlayPage() {
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [])
 
-  const best = result?.bestAction ?? -1
+  const bestRaw = result?.bestAction ?? -1
   const done = board === FULL
   const movesUsed = Math.max(0, turn - 1)
-  const expectedLeft =
-    result && Number.isFinite(result.expected) ? result.expected : NaN
+  const minRem = result?.minRemaining ?? -1
+  // İstemci emniyeti: taş en kısa yolu koruyan bir hücreye konamıyorsa PASS göster
+  const preservesShortest =
+    minRem >= 0 &&
+    (result?.placements ?? []).some(
+      (p) => p.surviving > 0 && p.action !== SKIP && p.minRemaining === minRem - 1,
+    )
+  const forcePass = piece === 6 && deluxe <= 0
+  const best =
+    forcePass || bestRaw === SKIP || bestRaw < 0
+      ? SKIP
+      : minRem >= 0 && !preservesShortest
+        ? SKIP
+        : bestRaw
+  const expectedLeft = (() => {
+    if (!result || !Number.isFinite(result.expected)) return NaN
+    if (best === SKIP && minRem >= 0) return minRem + 1
+    return result.expected
+  })()
   const projected = done
     ? movesUsed
     : Number.isFinite(expectedLeft)
       ? projectedMoves(turn, Math.ceil(expectedLeft))
       : NaN
-  const mustPass =
-    !done && (best === SKIP || best < 0 || (piece === 6 && deluxe <= 0))
+  const recommendPass = !done && (best === SKIP || forcePass)
+  const passReason =
+    forcePass || bestRaw === SKIP
+      ? result?.passReason ?? (forcePass ? 'no_fit' : 'regret')
+      : minRem >= 0 && !preservesShortest
+        ? 'regret'
+        : result?.passReason
+  const waitPieceId =
+    recommendPass
+      ? (result?.waitPieceId ?? result?.scenarios?.[0]?.nextPieceId)
+      : undefined
+  const waitPieceName =
+    waitPieceId !== undefined && waitPieceId >= 0 && waitPieceId < PIECE_NAMES.length
+      ? PIECE_NAMES[waitPieceId]
+      : null
+  const passHint =
+    recommendPass && passReason === 'regret'
+      ? d.mustPassRegret.replace('{piece}', waitPieceName ?? '—')
+      : recommendPass
+        ? d.mustPass
+        : null
 
   function pushHistory() {
     setHistory((h) => [...h, { board, piece, deluxe, turn, placements }])
@@ -201,7 +237,7 @@ export function PlayPage() {
               board={board}
               placements={placements}
               piece={piece}
-              bestAction={piece === 6 && deluxe <= 0 ? -1 : best}
+              bestAction={recommendPass ? -1 : best}
               previewAction={preview}
               onHover={setPreview}
               onPlace={(a) => place(a)}
@@ -244,23 +280,35 @@ export function PlayPage() {
             </div>
           ) : (
             <>
-              <div className="rounded-2xl border border-white/10 bg-black/25 p-3">
+              <div
+                className={`rounded-2xl border p-3 ${
+                  recommendPass
+                    ? 'border-amber-400/35 bg-amber-400/10'
+                    : 'border-white/10 bg-black/25'
+                }`}
+              >
                 <div className="text-xs text-slate-400">{d.bestMove}</div>
                 <div className="mt-1 flex items-center gap-3">
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-white/10 bg-black/40">
-                    <PieceThumb pieceId={piece} size={40} />
+                    {recommendPass && waitPieceId !== undefined ? (
+                      <PieceThumb pieceId={waitPieceId} size={40} />
+                    ) : (
+                      <PieceThumb pieceId={piece} size={40} />
+                    )}
                   </div>
                   <button
                     type="button"
-                    className="text-2xl font-extrabold hover:text-emerald-300"
+                    className={`text-2xl font-extrabold hover:text-emerald-300 ${
+                      recommendPass ? 'text-amber-200' : ''
+                    }`}
                     onClick={applyBest}
                     title={d.bestMove}
                   >
-                    {actionLabel(piece === 6 && deluxe <= 0 ? SKIP : best)}
+                    {actionLabel(recommendPass ? SKIP : best)}
                   </button>
                 </div>
-                {mustPass && (
-                  <p className="mt-2 text-xs font-medium text-amber-200/90">{d.mustPass}</p>
+                {passHint && (
+                  <p className="mt-2 text-xs font-medium text-amber-200/90">{passHint}</p>
                 )}
                 <div className="mt-2 grid grid-cols-2 gap-2 text-xs">
                   <div className="rounded-xl bg-white/5 p-2" title={d.estRemainingHint}>

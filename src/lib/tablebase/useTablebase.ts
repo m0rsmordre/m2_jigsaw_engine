@@ -7,6 +7,8 @@ export type AnalyzeResult = {
   expected: number
   alive: number
   minRemaining: number
+  passReason?: 'no_fit' | 'regret'
+  waitPieceId?: number
   placements: PlacementScore[]
   scenarios: Scenario[]
 }
@@ -40,6 +42,8 @@ export function useTablebase(packUrl = FULL_PACK) {
           expected: msg.expected,
           alive: msg.alive,
           minRemaining: msg.minRemaining,
+          passReason: msg.passReason,
+          waitPieceId: msg.waitPieceId,
           placements: msg.placements,
           scenarios: msg.scenarios,
         })

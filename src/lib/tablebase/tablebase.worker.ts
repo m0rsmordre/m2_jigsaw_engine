@@ -1,3 +1,4 @@
+import { SKIP } from '../pieces'
 import { Tablebase, type Scenario, type PlacementScore } from './Tablebase'
 
 type InMsg =
@@ -21,6 +22,8 @@ type OutMsg =
       expected: number
       alive: number
       minRemaining: number
+      passReason?: 'no_fit' | 'regret'
+      waitPieceId?: number
       placements: PlacementScore[]
       scenarios: Scenario[]
     }
@@ -41,8 +44,31 @@ self.onmessage = async (ev: MessageEvent<InMsg>) => {
       const { board, figure, deluxeLeft, topK = 10 } = msg
       const stock = Math.max(0, deluxeLeft | 0)
       const fig = figure === 6 && stock <= 0 ? 0 : figure
-      const rec = tb.recommend(board, fig, { deluxeLeft: stock })
+      const rec0 = tb.recommend(board, fig, { deluxeLeft: stock })
       const alive = tb.aliveStats(board, stock)
+      const placements =
+        fig === 6 && stock <= 0 ? [] : tb.evaluatePlacements(board, fig, stock)
+      // Gerçek en kısa yollar (elindeki taşı zorlamadan)
+      const scenarios = tb.shortestContinuations(board, topK, {
+        deluxeLeft: stock,
+      })
+
+      // Emniyet: elindeki taş global min'i bir düşüremiyorsa → PASS
+      const globalMin = alive.minRemaining
+      let rec = rec0
+      const preservesShortest =
+        globalMin >= 0 &&
+        placements.some(
+          (p) => p.surviving > 0 && p.action !== SKIP && p.minRemaining === globalMin - 1,
+        )
+      if (rec.action !== SKIP && globalMin >= 0 && !preservesShortest) {
+        rec = {
+          action: SKIP,
+          expected: globalMin + 1,
+          passReason: placements.some((p) => p.surviving > 0) ? 'regret' : 'no_fit',
+        }
+      }
+
       const out: OutMsg = {
         type: 'result',
         board,
@@ -51,12 +77,11 @@ self.onmessage = async (ev: MessageEvent<InMsg>) => {
         expected: rec.expected,
         alive: alive.count,
         minRemaining: alive.minRemaining,
-        placements:
-          fig === 6 && stock <= 0 ? [] : tb.evaluatePlacements(board, fig, stock),
-        scenarios: tb.shortestContinuations(board, topK, {
-          deluxeLeft: stock,
-          preferFigure: fig,
-        }),
+        passReason: rec.passReason,
+        waitPieceId:
+          rec.action === SKIP && scenarios[0] ? scenarios[0].nextPieceId : undefined,
+        placements,
+        scenarios,
       }
       self.postMessage(out)
     }

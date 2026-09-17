@@ -28,9 +28,11 @@ const dict = {
     gameOverHint: 'Hamle sayına göre kazandığın sandık:',
     yourMoves: 'Toplam hamle',
     analysis: 'Analiz',
-    analysisHint: 'En kısa devam yolları (mümkünse elindeki taşla).',
-    bestMove: 'Önerilen hamle (elindeki taş)',
+    analysisHint: 'En kısa devam yollarına göre öneri (gerekirse pas).',
+    bestMove: 'Önerilen hamle',
     mustPass: 'Bu taş sığmıyor — çöp at veya başka taş seç.',
+    mustPassRegret:
+      'Daha kısa yol var; elindeki taş o gidişatta yok — çöp at. Beklenen: {piece}.',
     estRemaining: 'Tahmini kalan hamle',
     estRemainingHint:
       'Seçili taş için en iyi hamleden sonra tahmini kaç hamle kaldığı. Eski E[kalan] ifadesinin açılımı budur.',
@@ -101,9 +103,11 @@ const dict = {
     gameOverHint: 'Chest earned for your move count:',
     yourMoves: 'Total moves',
     analysis: 'Analysis',
-    analysisHint: 'Shortest continuations (prefers piece in hand when possible).',
-    bestMove: 'Suggested move (current piece)',
+    analysisHint: 'Suggestions follow shortest paths (pass when needed).',
+    bestMove: 'Suggested move',
     mustPass: 'This piece does not fit — discard or pick another.',
+    mustPassRegret:
+      'A shorter path exists; your piece is not on it — discard. Wait for: {piece}.',
     estRemaining: 'Est. moves left',
     estRemainingHint:
       'Estimated remaining moves after the best placement for the selected piece. This is what E[remaining] meant.',
@@ -174,9 +178,11 @@ const dict = {
     gameOverHint: 'Truhe für deine Zugzahl:',
     yourMoves: 'Gesamtzüge',
     analysis: 'Analyse',
-    analysisHint: 'Kürzeste Fortsetzungen (wenn möglich mit dem Stein in der Hand).',
-    bestMove: 'Vorgeschlagener Zug (aktueller Stein)',
+    analysisHint: 'Vorschläge folgen den kürzesten Wegen (Pass wenn nötig).',
+    bestMove: 'Vorgeschlagener Zug',
     mustPass: 'Dieser Stein passt nicht — verwerfen oder anderen wählen.',
+    mustPassRegret:
+      'Kürzerer Weg vorhanden; dein Stein ist nicht darauf — verwerfen. Warte auf: {piece}.',
     estRemaining: 'Geschätzte Restzüge',
     estRemainingHint:
       'Geschätzte verbleibende Züge nach dem besten Zug für den gewählten Stein.',
