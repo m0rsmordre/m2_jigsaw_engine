@@ -20,10 +20,9 @@ a { color: var(--accent); }
 .wrap { max-width: 52rem; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
 header {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem 1rem;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.85rem;
   border-bottom: 1px solid var(--line);
   padding-bottom: 1rem;
   margin-bottom: 1.5rem;

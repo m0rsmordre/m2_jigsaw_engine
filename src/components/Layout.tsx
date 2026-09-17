@@ -15,7 +15,7 @@ export function Layout() {
 
   return (
     <div className="mx-auto flex min-h-screen max-w-6xl flex-col px-4 py-5">
-      <header className="mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
+      <header className="mb-5 flex flex-col gap-3 border-b border-white/10 pb-4">
         <div>
           <h1 className="bg-gradient-to-r from-sky-300 to-violet-300 bg-clip-text text-2xl font-extrabold tracking-tight text-transparent">
             {d.appTitle}
