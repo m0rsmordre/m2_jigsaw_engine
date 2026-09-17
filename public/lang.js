@@ -114,4 +114,25 @@
       })
     })
   })
+
+  // Soft block: Ctrl+U / F12 / context menu (not real security)
+  document.addEventListener(
+    'keydown',
+    function (e) {
+      var key = (e.key || '').toLowerCase()
+      var ctrl = e.ctrlKey || e.metaKey
+      if (e.key === 'F12' || (ctrl && key === 'u') || (ctrl && e.shiftKey && 'ijck'.indexOf(key) !== -1)) {
+        e.preventDefault()
+        e.stopPropagation()
+      }
+    },
+    true,
+  )
+  document.addEventListener(
+    'contextmenu',
+    function (e) {
+      e.preventDefault()
+    },
+    true,
+  )
 })()

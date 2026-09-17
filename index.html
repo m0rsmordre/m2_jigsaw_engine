@@ -81,6 +81,25 @@
 
     <script type="module" src="/src/main.tsx"></script>
     <script>
+      document.addEventListener(
+        'keydown',
+        function (e) {
+          var key = (e.key || '').toLowerCase()
+          var ctrl = e.ctrlKey || e.metaKey
+          if (e.key === 'F12' || (ctrl && key === 'u') || (ctrl && e.shiftKey && 'ijck'.indexOf(key) !== -1)) {
+            e.preventDefault()
+            e.stopPropagation()
+          }
+        },
+        true,
+      )
+      document.addEventListener(
+        'contextmenu',
+        function (e) {
+          e.preventDefault()
+        },
+        true,
+      )
       window.addEventListener('DOMContentLoaded', function () {
         var obs = new MutationObserver(function () {
           var root = document.getElementById('root')
