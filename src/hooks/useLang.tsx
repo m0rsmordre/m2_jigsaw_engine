@@ -12,7 +12,7 @@ const LangContext = createContext<Ctx | null>(null)
 export function LangProvider({ children }: { children: ReactNode }) {
   const [lang, setLang] = useState<Lang>(() => {
     const saved = localStorage.getItem('fj-lang')
-    return saved === 'en' || saved === 'tr' ? saved : 'tr'
+    return saved === 'en' || saved === 'tr' || saved === 'de' ? saved : 'tr'
   })
   const value = useMemo(() => {
     const wrapped = (l: Lang) => {

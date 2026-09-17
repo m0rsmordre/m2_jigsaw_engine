@@ -1,10 +1,39 @@
 import { NavLink, Outlet } from 'react-router-dom'
-import { FlagEn, FlagTr } from './Flags'
+import type { ReactNode } from 'react'
+import { FlagDe, FlagEn, FlagTr } from './Flags'
 import { useBlockDevShortcuts } from '../hooks/useBlockDevShortcuts'
 import { useLang } from '../hooks/useLang'
+import type { Lang } from '../i18n'
 
 const ext =
   'rounded-full px-3 py-1.5 text-sm font-semibold text-slate-300 hover:bg-white/10 hover:text-white border border-transparent'
+
+function LangBtn({
+  code,
+  active,
+  onClick,
+  label,
+  children,
+}: {
+  code: Lang
+  active: boolean
+  onClick: () => void
+  label: string
+  children: ReactNode
+}) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      title={label}
+      className={`flex items-center px-2.5 py-1.5 ${active ? 'bg-white/15' : 'opacity-55 hover:opacity-90'}`}
+      onClick={onClick}
+      data-lang={code}
+    >
+      {children}
+    </button>
+  )
+}
 
 export function Layout() {
   useBlockDevShortcuts()
@@ -12,6 +41,7 @@ export function Layout() {
   const link =
     'rounded-full px-3 py-1.5 text-sm font-semibold text-slate-300 hover:bg-white/10 hover:text-white'
   const active = 'bg-sky-400/15 text-sky-200 border border-sky-400/30'
+  const flagCls = 'h-3.5 w-[1.35rem] overflow-hidden rounded-[2px] shadow-sm'
 
   return (
     <div className="mx-auto flex min-h-screen max-w-6xl flex-col px-4 py-5">
@@ -25,7 +55,6 @@ export function Layout() {
           <NavLink to="/" end className={({ isActive }) => `${link} ${isActive ? active : 'border border-transparent'}`}>
             {d.navPlay}
           </NavLink>
-          {/* Full-page static HTML for crawlers / AdSense */}
           <a className={ext} href="/how-to/">
             {d.navHowTo}
           </a>
@@ -42,24 +71,15 @@ export function Layout() {
             {d.navContact}
           </a>
           <div className="ml-2 flex overflow-hidden rounded-full border border-white/15">
-            <button
-              type="button"
-              aria-label="Türkçe"
-              title="Türkçe"
-              className={`flex items-center px-2.5 py-1.5 ${lang === 'tr' ? 'bg-white/15' : 'opacity-55 hover:opacity-90'}`}
-              onClick={() => setLang('tr')}
-            >
-              <FlagTr className="h-3.5 w-[1.35rem] overflow-hidden rounded-[2px] shadow-sm" />
-            </button>
-            <button
-              type="button"
-              aria-label="English"
-              title="English"
-              className={`flex items-center px-2.5 py-1.5 ${lang === 'en' ? 'bg-white/15' : 'opacity-55 hover:opacity-90'}`}
-              onClick={() => setLang('en')}
-            >
-              <FlagEn className="h-3.5 w-[1.35rem] overflow-hidden rounded-[2px] shadow-sm" />
-            </button>
+            <LangBtn code="tr" active={lang === 'tr'} label="Türkçe" onClick={() => setLang('tr')}>
+              <FlagTr className={flagCls} />
+            </LangBtn>
+            <LangBtn code="en" active={lang === 'en'} label="English" onClick={() => setLang('en')}>
+              <FlagEn className={flagCls} />
+            </LangBtn>
+            <LangBtn code="de" active={lang === 'de'} label="Deutsch" onClick={() => setLang('de')}>
+              <FlagDe className={flagCls} />
+            </LangBtn>
           </div>
         </nav>
       </header>
@@ -67,19 +87,19 @@ export function Layout() {
       <footer className="mt-auto border-t border-white/10 pt-4 text-center text-xs text-slate-500">
         <nav className="mb-2 flex flex-wrap justify-center gap-3">
           <a className="hover:text-sky-300" href="/terms/">
-            Terms
+            {d.footerTerms}
           </a>
           <a className="hover:text-sky-300" href="/privacy/">
-            Privacy
+            {d.footerPrivacy}
           </a>
           <a className="hover:text-sky-300" href="/cookie-policy/">
-            Cookie Policy
+            {d.footerCookies}
           </a>
           <a className="hover:text-sky-300" href="/contact/">
-            Contact
+            {d.footerContact}
           </a>
           <a className="hover:text-sky-300" href="/calendar/">
-            Calendar
+            {d.footerCalendar}
           </a>
         </nav>
         <p>{d.disclaimer}</p>

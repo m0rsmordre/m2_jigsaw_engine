@@ -7,9 +7,10 @@ export function chestFromMoves(moves: number): ChestTier {
   return 'K'
 }
 
-/** UI kısaltması: TR B/O/K, EN B/M/S (Big / Middle / Small). */
-export function chestCode(tier: ChestTier, lang: 'tr' | 'en'): string {
+/** UI kısaltması: TR B/O/K · EN B/M/S · DE G/M/K (Große / Mittlere / Kleine). */
+export function chestCode(tier: ChestTier, lang: 'tr' | 'en' | 'de'): string {
   if (lang === 'tr') return tier
+  if (lang === 'de') return tier === 'B' ? 'G' : tier === 'O' ? 'M' : 'K'
   return tier === 'B' ? 'B' : tier === 'O' ? 'M' : 'S'
 }
 

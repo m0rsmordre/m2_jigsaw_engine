@@ -44,3 +44,21 @@ export function FlagEn({ className = 'h-4 w-6', title = 'English' }: Props) {
     </svg>
   )
 }
+
+/** Almanya bayrağı (DE) — siyah / kırmızı / altın */
+export function FlagDe({ className = 'h-4 w-6', title = 'Deutsch' }: Props) {
+  return (
+    <svg
+      viewBox="0 0 30 20"
+      className={className}
+      role="img"
+      aria-label={title}
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <title>{title}</title>
+      <rect width="30" height="20" fill="#FFCC00" />
+      <rect width="30" height="13.333" fill="#DD0000" />
+      <rect width="30" height="6.667" fill="#000" />
+    </svg>
+  )
+}

@@ -45,6 +45,24 @@
         minUnit: 'm',
         secUnit: 's',
       },
+      de: {
+        docTitle: 'Kalender — Fisch-Puzzle-Helfer',
+        pageTitle: 'Angel-Eventkalender',
+        intro: 'Zusammengestellt aus Metin2-Wiki und offiziellem Forum. Europa-Zeiten werden in türkische Zeit (TSİ) umgerechnet. Countdowns aktualisieren sich live.',
+        note: 'Quelle: Metin2 Wiki / Forum — globale Sonder-Events können diesen Plan überschreiben.',
+        ezelTitle: 'Ezel / Barbaros',
+        marmaraTitle: 'Marmara / Bagjanamu',
+        charonTitle: 'Charon / Lucifer / Safir / Star',
+        nextTitle: 'Nächstes Fisch-Puzzle-Event',
+        empty: 'Keine bevorstehenden Angel-Events gefunden.',
+        untilStart: 'bis das Event beginnt',
+        untilEnd: 'bis das Event endet',
+        ended: 'Event beendet',
+        dayUnit: 'T',
+        hourUnit: 'Std',
+        minUnit: 'Min',
+        secUnit: 'Sek',
+      },
     }
   </script>
   <script src="/lang.js" defer></script>
@@ -63,6 +81,7 @@
         <div class="lang-switch" role="group" aria-label="Language">
           <button type="button" data-lang-btn="tr"></button>
           <button type="button" data-lang-btn="en"></button>
+          <button type="button" data-lang-btn="de"></button>
         </div>
       </nav>
     </header>
@@ -139,7 +158,7 @@
     }
 
     function fmtRange(start, end, lang) {
-      var loc = lang === 'en' ? 'en-GB' : 'tr-TR'
+      var loc = lang === 'en' ? 'en-GB' : lang === 'de' ? 'de-DE' : 'tr-TR'
       var day = new Intl.DateTimeFormat(loc, {
         timeZone: IST, weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
       }).format(start)
@@ -166,6 +185,10 @@
       if (lang === 'en') {
         var body = days + t(lang, 'dayUnit') + ' ' + hours + t(lang, 'hourUnit') + ' ' + mins + t(lang, 'minUnit') + ' ' + secs + t(lang, 'secUnit')
         return body + ' ' + t(lang, mode === 'start' ? 'untilStart' : 'untilEnd')
+      }
+      if (lang === 'de') {
+        var bodyDe = days + ' ' + t(lang, 'dayUnit') + ' ' + hours + ' ' + t(lang, 'hourUnit') + ' ' + mins + ' ' + t(lang, 'minUnit') + ' ' + secs + ' ' + t(lang, 'secUnit')
+        return 'Noch ' + bodyDe + ' ' + t(lang, mode === 'start' ? 'untilStart' : 'untilEnd')
       }
       var bodyTr = days + ' ' + t(lang, 'dayUnit') + ' ' + hours + ' ' + t(lang, 'hourUnit') + ' ' + mins + ' ' + t(lang, 'minUnit') + ' ' + secs + ' ' + t(lang, 'secUnit')
       return bodyTr + ' ' + t(lang, mode === 'start' ? 'untilStart' : 'untilEnd')
@@ -225,7 +248,9 @@
             out.push({
               title: lang === 'en'
                 ? 'Fishing — Wednesday 02:00–14:00 Europe'
-                : 'Balıkçılık — Çarşamba 02:00–14:00 Avrupa',
+                : lang === 'de'
+                  ? 'Angeln — Mittwoch 02:00–14:00 Europa'
+                  : 'Balıkçılık — Çarşamba 02:00–14:00 Avrupa',
               start: ws,
               end: we
             })
@@ -238,7 +263,9 @@
             out.push({
               title: lang === 'en'
                 ? 'Fishing — Saturday 14:00–18:00 Europe'
-                : 'Balıkçılık — Cumartesi 14:00–18:00 Avrupa',
+                : lang === 'de'
+                  ? 'Angeln — Samstag 14:00–18:00 Europa'
+                  : 'Balıkçılık — Cumartesi 14:00–18:00 Avrupa',
               start: ss,
               end: se
             })
@@ -249,7 +276,7 @@
     }
 
     function upcomingEzel(now, lang) {
-      var label = lang === 'en' ? 'Fishing' : 'Balıkçılık'
+      var label = lang === 'en' ? 'Fishing' : lang === 'de' ? 'Angeln' : 'Balıkçılık'
       return ezel.map(function (pair) {
         return { title: label, start: new Date(pair[0]), end: new Date(pair[1]) }
       }).filter(function (e) { return e.end.getTime() > now })
@@ -268,7 +295,9 @@
         return {
           title: lang === 'en'
             ? 'Fishing — ' + eu + ' Europe'
-            : 'Balıkçılık — ' + eu + ' Avrupa',
+            : lang === 'de'
+              ? 'Angeln — ' + eu + ' Europa'
+              : 'Balıkçılık — ' + eu + ' Avrupa',
           start: start,
           end: end
         }
