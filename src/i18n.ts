@@ -34,6 +34,10 @@ const dict = {
     mustPassRegret:
       'Daha kısa yol var; elindeki taş o gidişatta yok — çöp at. Beklenen: {piece}.',
     placeAnyway: 'Yine de seçili taşı koy: {coord}',
+    blocksCriticalHint:
+      'Seçili taş en kısa yolun {piece} hücresini bozar; çöp atmak daha iyi.',
+    tekliHeavyHint:
+      'Bu yerleşimden sonra ~{n} Tekli kalır — nokta beklemek dezavantaj.',
     offShortestHint:
       'Bu taş en kısa yolda değil. İstersen çöp atıp {piece} bekleyebilirsin.',
     estRemaining: 'Tahmini kalan hamle',
@@ -112,6 +116,10 @@ const dict = {
     mustPassRegret:
       'A shorter path exists; your piece is not on it — discard. Wait for: {piece}.',
     placeAnyway: 'Place selected piece anyway: {coord}',
+    blocksCriticalHint:
+      'Selected piece blocks the shortest path cell for {piece}; discarding is better.',
+    tekliHeavyHint:
+      'After this placement ~{n} singles remain — waiting for dots is a disadvantage.',
     offShortestHint:
       'This piece is not on the shortest path. You can discard and wait for {piece}.',
     estRemaining: 'Est. moves left',
@@ -190,6 +198,10 @@ const dict = {
     mustPassRegret:
       'Kürzerer Weg vorhanden; dein Stein ist nicht darauf — verwerfen. Warte auf: {piece}.',
     placeAnyway: 'Ausgewählten Stein trotzdem setzen: {coord}',
+    blocksCriticalHint:
+      'Der Stein blockiert die {piece}-Zelle des kürzesten Wegs; Verwerfen ist besser.',
+    tekliHeavyHint:
+      'Danach bleiben ~{n} Einzelsteine — auf Punkte zu warten ist Nachteil.',
     offShortestHint:
       'Dieser Stein liegt nicht auf dem kürzesten Weg. Du kannst verwerfen und auf {piece} warten.',
     estRemaining: 'Geschätzte Restzüge',

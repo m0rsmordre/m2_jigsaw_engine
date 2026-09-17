@@ -22,6 +22,8 @@ type OutMsg =
       expected: number
       placeAction?: number
       placeExpected?: number
+      placeTekliLeft?: number
+      blocksCritical?: boolean
       alive: number
       minRemaining: number
       passReason?: 'no_fit' | 'regret'
@@ -60,6 +62,8 @@ self.onmessage = async (ev: MessageEvent<InMsg>) => {
         expected: rec.expected,
         placeAction: rec.placeAction,
         placeExpected: rec.placeExpected,
+        placeTekliLeft: rec.placeTekliLeft,
+        blocksCritical: rec.blocksCritical,
         alive: alive.count,
         minRemaining: alive.minRemaining,
         passReason: rec.passReason,

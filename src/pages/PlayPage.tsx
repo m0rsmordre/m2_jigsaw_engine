@@ -94,8 +94,29 @@ export function PlayPage() {
     !recommendPass && result?.offShortest && waitPieceName
       ? d.offShortestHint.replace('{piece}', waitPieceName)
       : null
-  const placeAltLabel =
-    recommendPass && placeAction >= 0 ? actionLabel(placeAction) : null
+  // Kritik hücreyi bozan / çok Tekli bırakan "yine de koy"yı gösterme
+  const showPlaceAlt =
+    recommendPass &&
+    placeAction >= 0 &&
+    !result?.blocksCritical &&
+    (result?.placeTekliLeft ?? 0) <= 1
+  const placeAltLabel = showPlaceAlt ? actionLabel(placeAction) : null
+  const tekliWarn =
+    recommendPass && result?.blocksCritical
+      ? d.blocksCriticalHint.replace('{piece}', waitPieceName ?? '—')
+      : recommendPass && (result?.placeTekliLeft ?? 0) >= 2
+        ? d.tekliHeavyHint.replace(
+            '{n}',
+            String(result?.placeTekliLeft ?? 0),
+          )
+        : null
+  // Tahta vurgusu: PASS + kritik bozuyorsa gösterme; değilse seçili taşın yeri
+  const boardBest =
+    recommendPass && result?.blocksCritical
+      ? -1
+      : placeAction >= 0
+        ? placeAction
+        : -1
 
   function pushHistory() {
     setHistory((h) => [...h, { board, piece, deluxe, turn, placements }])
@@ -225,7 +246,7 @@ export function PlayPage() {
               board={board}
               placements={placements}
               piece={piece}
-              bestAction={placeAction >= 0 ? placeAction : -1}
+              bestAction={boardBest}
               previewAction={preview}
               onHover={setPreview}
               onPlace={(a) => place(a)}
@@ -297,6 +318,9 @@ export function PlayPage() {
                 </div>
                 {passHint && (
                   <p className="mt-2 text-xs font-medium text-amber-200/90">{passHint}</p>
+                )}
+                {tekliWarn && (
+                  <p className="mt-2 text-xs font-medium text-rose-200/90">{tekliWarn}</p>
                 )}
                 {placeAltLabel && (
                   <button

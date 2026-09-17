@@ -7,6 +7,8 @@ export type AnalyzeResult = {
   expected: number
   placeAction?: number
   placeExpected?: number
+  placeTekliLeft?: number
+  blocksCritical?: boolean
   alive: number
   minRemaining: number
   passReason?: 'no_fit' | 'regret'
@@ -45,6 +47,8 @@ export function useTablebase(packUrl = FULL_PACK) {
           expected: msg.expected,
           placeAction: msg.placeAction,
           placeExpected: msg.placeExpected,
+          placeTekliLeft: msg.placeTekliLeft,
+          blocksCritical: msg.blocksCritical,
           alive: msg.alive,
           minRemaining: msg.minRemaining,
           passReason: msg.passReason,

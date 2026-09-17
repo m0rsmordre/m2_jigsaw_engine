@@ -20,6 +20,8 @@ export type PlacementScore = {
   mask: number
   surviving: number
   minRemaining: number
+  /** En iyi (minRemaining) tiling'lerde kalan Tekli adedi — düşük daha iyi */
+  minTekliLeft: number
   weightSum: number
 }
 
@@ -210,6 +212,113 @@ export class Tablebase {
     return { count, minRemaining: count ? min : -1 }
   }
 
+  private remainingPidCount(
+    idx: number,
+    board: number,
+    pid: number,
+    excludeMask = 0,
+  ): number {
+    const base = this.offsets[idx]
+    const ln = this.lengths[idx]
+    let n = 0
+    for (let j = 0; j < ln; j++) {
+      const m = this.flatMasks[base + j]
+      if (m & board) continue
+      if (excludeMask && m === excludeMask) continue
+      if (this.flatPids[base + j] === pid) n++
+    }
+    return n
+  }
+
+  /** En kısa tiling'lerdeki olası sonraki taş maskelerinin birleşimi (kritik hücreler). */
+  shortestNextMaskUnion(board: number, deluxeLeft = 99): number {
+    const { minRemaining: globalMin } = this.aliveStats(board, deluxeLeft)
+    if (globalMin < 0) return 0
+    let union = 0
+
+    const addNextOnly = (idx: number, b: number) => {
+      const base = this.offsets[idx]
+      const ln = this.lengths[idx]
+      for (let j = 0; j < ln; j++) {
+        const m = this.flatMasks[base + j]
+        if (m & b) continue
+        union |= m
+        return
+      }
+    }
+
+    if (board === 0) {
+      for (let idx = 0; idx < this.nTilings; idx++) {
+        if (!this.fitsDeluxeStock(idx, 0, deluxeLeft)) continue
+        if (this.lengths[idx] !== globalMin) continue
+        addNextOnly(idx, 0)
+      }
+      return union
+    }
+
+    const active = this.updateActive(board)
+    for (const idx of active) {
+      if (!this.fitsDeluxeStock(idx, board, deluxeLeft)) continue
+      const rem = this.lengths[idx] - this.placedCount(idx, board)
+      if (rem !== globalMin) continue
+      addNextOnly(idx, board)
+    }
+    return union
+  }
+
+  private pickBestPlacement(
+    evals: PlacementScore[],
+    criticalUnion = 0,
+  ): PlacementScore | null {
+    let best: PlacementScore | null = null
+    let bestBlocks = false
+    for (const ev of evals) {
+      if (ev.surviving <= 0 || ev.action === SKIP || ev.minRemaining < 0) continue
+      const blocks =
+        criticalUnion !== 0 && (ev.mask & criticalUnion) !== 0
+      if (!best) {
+        best = ev
+        bestBlocks = blocks
+        continue
+      }
+      // Kritik hücreleri bozmayan yerleşim öncelikli (Ters L / Cubuk slotunu koru)
+      if (blocks !== bestBlocks) {
+        if (!blocks) {
+          best = ev
+          bestBlocks = false
+        }
+        continue
+      }
+      if (ev.minRemaining !== best.minRemaining) {
+        if (ev.minRemaining < best.minRemaining) {
+          best = ev
+          bestBlocks = blocks
+        }
+        continue
+      }
+      // Aynı uzunlukta Tekli az olanı tercih et (nokta beklemek dezavantaj)
+      if (ev.minTekliLeft !== best.minTekliLeft) {
+        if (ev.minTekliLeft < best.minTekliLeft) {
+          best = ev
+          bestBlocks = blocks
+        }
+        continue
+      }
+      if (ev.weightSum !== best.weightSum) {
+        if (ev.weightSum > best.weightSum) {
+          best = ev
+          bestBlocks = blocks
+        }
+        continue
+      }
+      if (ev.action < best.action) {
+        best = ev
+        bestBlocks = blocks
+      }
+    }
+    return best
+  }
+
   evaluatePlacements(
     board: number,
     figure: number,
@@ -226,6 +335,7 @@ export class Tablebase {
       mask,
       surviving: 0,
       minRemaining: 999,
+      minTekliLeft: 99,
       weightSum: 0,
     }))
     if (!masks.length) return results
@@ -237,28 +347,41 @@ export class Tablebase {
         const ids = this.maskToTilings.get(masks[k])
         if (!ids || !ids.length) {
           results[k].minRemaining = -1
+          results[k].minTekliLeft = -1
           continue
         }
         let w = 0
         let min = 99
+        let minTekli = 99
         let surviving = 0
         for (let t = 0; t < ids.length; t++) {
           const i = ids[t]
           if (!this.fitsDeluxeStock(i, 0, deluxeLeft)) continue
           surviving++
           w += this.weights[i]
-          min = Math.min(min, this.lengths[i] - 1)
+          const rem = this.lengths[i] - 1
+          const tekli = this.remainingPidCount(i, 0, 0, masks[k])
+          if (rem < min) {
+            min = rem
+            minTekli = tekli
+          } else if (rem === min && tekli < minTekli) {
+            minTekli = tekli
+          }
         }
         results[k].surviving = surviving
         results[k].weightSum = w
         results[k].minRemaining = surviving ? min : -1
+        results[k].minTekliLeft = surviving ? minTekli : -1
       }
       return results
     }
 
     const active = this.updateActive(board)
     if (!active.length) {
-      for (const r of results) r.minRemaining = -1
+      for (const r of results) {
+        r.minRemaining = -1
+        r.minTekliLeft = -1
+      }
       return results
     }
 
@@ -276,13 +399,22 @@ export class Tablebase {
         const k = maskIndex.get(m)
         if (k === undefined) continue
         const rem = ln - placed - 1
+        const tekli = this.remainingPidCount(idx, board, 0, m)
         results[k].surviving++
         results[k].weightSum += this.weights[idx]
-        if (rem < results[k].minRemaining) results[k].minRemaining = rem
+        if (rem < results[k].minRemaining) {
+          results[k].minRemaining = rem
+          results[k].minTekliLeft = tekli
+        } else if (rem === results[k].minRemaining && tekli < results[k].minTekliLeft) {
+          results[k].minTekliLeft = tekli
+        }
       }
     }
     for (const r of results) {
-      if (!r.surviving) r.minRemaining = -1
+      if (!r.surviving) {
+        r.minRemaining = -1
+        r.minTekliLeft = -1
+      }
     }
     return results
   }
@@ -327,10 +459,9 @@ export class Tablebase {
 
   /**
    * Hamle önerisi:
-   * - Varsayılan: elindeki taş için en iyi yerleşim (min kalan, sonra ağırlık).
-   * - Son aşama (globalMin <= 3): taş en kısa gidişatta yoksa PASS —
-   *   Cubuk/Deluxe boşluğunu Tekli ile bozmamak için.
-   * - Erken oyun / boş tahta: Deluxe bekletmez; normal yerleştirme önerir.
+   * - Varsayılan: elindeki taş için en iyi yerleşim (kalan, Tekli azlığı, ağırlık).
+   * - Son aşama (globalMin <= 3): taş en kısa gidişatı koruyamıyorsa PASS.
+   * - placeAction: mümkünse en kısa yolun kritik hücrelerini bozmayan yerleşim.
    */
   recommend(
     board: number,
@@ -341,11 +472,12 @@ export class Tablebase {
     expected: number
     placeAction?: number
     placeExpected?: number
+    placeTekliLeft?: number
+    blocksCritical?: boolean
     passReason?: 'no_fit' | 'regret'
     offShortest?: boolean
   } {
     const deluxeLeft = opts?.deluxeLeft ?? 99
-    /** Bu eşik ve altında "en kısa yolu koru / yoksa pas" devreye girer. */
     const ENDGAME_PASS_AT = 3
     const { minRemaining: globalMin } = this.aliveStats(board, deluxeLeft)
     const passExpected =
@@ -356,38 +488,36 @@ export class Tablebase {
     }
 
     const evals = this.evaluatePlacements(board, figure, deluxeLeft)
-    let best: PlacementScore | null = null
-    for (const ev of evals) {
-      if (ev.surviving <= 0 || ev.action === SKIP) continue
-      if (
-        !best ||
-        ev.minRemaining < best.minRemaining ||
-        (ev.minRemaining === best.minRemaining && ev.weightSum > best.weightSum)
-      ) {
-        best = ev
-      }
-    }
+    const criticalUnion =
+      globalMin >= 0 ? this.shortestNextMaskUnion(board, deluxeLeft) : 0
+    const bestAny = this.pickBestPlacement(evals, criticalUnion)
 
-    if (!best) {
+    if (!bestAny) {
       return { action: SKIP, expected: passExpected, passReason: 'no_fit' }
     }
 
-    const placeAction = best.action
-    const placeExpected = best.minRemaining + 1
+    const blocksCritical =
+      criticalUnion !== 0 && (bestAny.mask & criticalUnion) !== 0
+    const placeAction = bestAny.action
+    const placeExpected = bestAny.minRemaining + 1
+    const placeTekliLeft = bestAny.minTekliLeft
     const onShortest =
       globalMin >= 0 && this.figureOnShortestPaths(board, figure, deluxeLeft)
     const preserves =
-      globalMin >= 0 && best.minRemaining === globalMin - 1
+      globalMin >= 0 && bestAny.minRemaining === globalMin - 1
     const endgame =
       globalMin >= 0 && globalMin <= ENDGAME_PASS_AT
 
-    // Son aşama: en kısa gidişatı koruyamıyorsa pas öner, ama tahta için placeAction tut
+    // Son aşama + en kısa yolu koruyamıyor → PASS.
+    // placeAction yine seçili taşın (mümkünse kritik-bozmayan) en iyi yeri.
     if (endgame && !preserves) {
       return {
         action: SKIP,
         expected: passExpected,
         placeAction,
         placeExpected,
+        placeTekliLeft,
+        blocksCritical,
         passReason: 'regret',
         offShortest: true,
       }
@@ -398,6 +528,8 @@ export class Tablebase {
       expected: placeExpected,
       placeAction,
       placeExpected,
+      placeTekliLeft,
+      blocksCritical,
       offShortest: !onShortest && !preserves,
     }
   }
