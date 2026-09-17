@@ -6,9 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Balık Yapboz Yardımcısı — bağımsız hayran aracı. Metin2 / Gameforge ile resmi bağlantısı yoktur."
+      content="Balık Yapboz Yardımcısı — Fish Jigsaw analysis helper, fishing event calendar, rules and how-to. Independent fan tool; not affiliated with Metin2 or Gameforge."
     />
-    <title>Balık Yapboz Yardımcısı</title>
+    <title>Balık Yapboz Yardımcısı — Fish Jigsaw Helper</title>
+    <link rel="stylesheet" href="/site.css" />
     <script
       async
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1421871236162555"
@@ -16,7 +17,83 @@
     ></script>
   </head>
   <body>
+    <!-- Crawlable HTML for bots that do not execute the React bundle -->
+    <div id="seo-static" class="wrap" style="padding-bottom: 0.5rem">
+      <header>
+        <h1>Balık Yapboz Yardımcısı</h1>
+        <nav>
+          <a href="/">Play</a>
+          <a href="/how-to/">How to</a>
+          <a href="/rules/">Rules</a>
+          <a href="/calendar/">Calendar</a>
+          <a href="/about/">About</a>
+          <a href="/contact/">Contact</a>
+        </nav>
+      </header>
+      <article>
+        <h2>Fish Jigsaw Helper</h2>
+        <p>
+          Independent fan-made helper for the Metin2 Fish Jigsaw (Balık Yapboz) mini-game.
+          Analyze the 4×6 board, place pieces, and see shortest finishing paths and chest estimates
+          (B / O / K). Not affiliated with Metin2 or Gameforge.
+        </p>
+        <p>
+          Read <a href="/how-to/">how to play</a>, <a href="/rules/">rules</a>, the
+          <a href="/calendar/">fishing event calendar</a> (Ezel/Barbaros, Marmara/Bagjanamu,
+          Charon/Lucifer/Safir/Star), or <a href="/contact/">contact</a> us on Discord.
+        </p>
+      </article>
+    </div>
+
     <div id="root"></div>
+
+    <noscript>
+      <div class="wrap">
+        <article>
+          <h2>JavaScript is required for the interactive board</h2>
+          <p>
+            You can still read our static pages:
+            <a href="/how-to/">How to</a>,
+            <a href="/rules/">Rules</a>,
+            <a href="/calendar/">Calendar</a>,
+            <a href="/about/">About</a>,
+            <a href="/terms/">Terms</a>,
+            <a href="/privacy/">Privacy</a>,
+            <a href="/cookie-policy/">Cookie Policy</a>,
+            <a href="/contact/">Contact</a>.
+          </p>
+        </article>
+      </div>
+    </noscript>
+
+    <footer id="seo-footer" class="wrap" style="padding-top: 0">
+      <nav>
+        <a href="/terms/">Terms</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/cookie-policy/">Cookie Policy</a>
+        <a href="/contact/">Contact</a>
+        <a href="/calendar/">Calendar</a>
+      </nav>
+      <p>
+        Independent fan project. Not affiliated with Metin2 or Gameforge.
+      </p>
+    </footer>
+
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      window.addEventListener('DOMContentLoaded', function () {
+        var obs = new MutationObserver(function () {
+          var root = document.getElementById('root')
+          if (root && root.childNodes.length) {
+            ;['seo-static', 'seo-footer'].forEach(function (id) {
+              var el = document.getElementById(id)
+              if (el) el.style.display = 'none'
+            })
+            obs.disconnect()
+          }
+        })
+        obs.observe(document.getElementById('root'), { childList: true })
+      })
+    </script>
   </body>
 </html>

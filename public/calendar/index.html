@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fishing Calendar — Balık Yapboz Yardımcısı</title>
+  <meta name="description" content="Metin2 fishing event calendar for Ezel/Barbaros, Marmara/Bagjanamu, Charon/Lucifer/Safir/Star with Turkey time and countdowns." />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="stylesheet" href="/site.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1><a href="/" style="color:inherit;text-decoration:none">Balık Yapboz Yardımcısı</a></h1>
+      <nav>
+        <a href="/">Play</a>
+        <a href="/how-to/">How to</a>
+        <a href="/rules/">Rules</a>
+        <a href="/calendar/">Calendar</a>
+        <a href="/about/">About</a>
+        <a href="/contact/">Contact</a>
+      </nav>
+    </header>
+
+    <article>
+      <h2>Fishing event calendar</h2>
+      <p>Public schedule compiled from the Metin2 Wiki event calendar. Europe times are converted to Turkey time (TSİ). Countdowns update live in your browser.</p>
+      <p class="note">Source: tr-wiki.metin2.gameforge.com — official global events may override these times.</p>
+    </article>
+
+    <article>
+      <h2>Ezel / Barbaros — upcoming fishing</h2>
+      <p class="muted">Times published in TSİ. Only events that have not ended yet are listed.</p>
+      <div id="ezel-list"></div>
+      <noscript>
+        <table>
+          <thead><tr><th>Event</th><th>Date</th><th>Duration (TSİ)</th></tr></thead>
+          <tbody>
+            <tr><td class="fish">Balıkçılık</td><td>4 Ekim 2026 Pazar</td><td>4 Saat (21:00 – 01:00 TSİ)</td></tr>
+            <tr><td class="fish">Balıkçılık</td><td>1 Kasım 2026 Pazar</td><td>4 Saat (22:00 – 02:00 TSİ)</td></tr>
+          </tbody>
+        </table>
+      </noscript>
+    </article>
+
+    <article>
+      <h2>Marmara / Bagjanamu — upcoming (published March 2026 calendar)</h2>
+      <p class="muted">Wiki published a March 2026 day calendar (Europe). Slots: 16:00–20:00 and 20:00–24:00 CET/CEST. Future rows after “now” are shown below.</p>
+      <div id="marmara-list"></div>
+      <noscript>
+        <p>Enable JavaScript to filter future Marmara events. March 2026 fishing slots were: 8 Mar 16:00–20:00, 14 Mar 20:00–24:00, 28 Mar 16:00–20:00 (Europe).</p>
+      </noscript>
+    </article>
+
+    <article>
+      <h2>Charon / Lucifer / Safir / Star — fixed weekly schedule</h2>
+      <p class="muted">Europe local time. TSİ ≈ Europe +1h in summer (CEST), +2h in winter (CET).</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th>02:00–14:00 (12h)</th>
+            <th>14:00–18:00 (4h)</th>
+            <th>18:00–22:00 (4h)</th>
+            <th>22:00–02:00 (4h)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Monday</td><td>Münzevi Tavsiyesi</td><td>Yeşil Ejderha Fasulyesi</td><td>Kutsama Kağıdı</td><td>Nugget</td></tr>
+          <tr><td>Tuesday</td><td>Güneş Özütü</td><td>Cor Draconis</td><td>Küçük Kutsama</td><td>Nesneyi Efsunla</td></tr>
+          <tr><td>Wednesday</td><td class="fish">Balıkçılık Etkinliği</td><td>Kutsama Küresi</td><td>Münzevi Tavsiyesi</td><td>Süper Taş</td></tr>
+          <tr><td>Thursday</td><td>Ay Özütü</td><td>Küçük Kutsama</td><td>Cor Draconis</td><td>Arttırma Kağıdı</td></tr>
+          <tr><td>Friday</td><td>Yeşil Ejderha Fasulyesi</td><td>Nesneyi Efsunla</td><td>Süper Taş</td><td>Cor Draconis</td></tr>
+          <tr><td>Saturday</td><td>Kutsama Kağıdı</td><td class="fish">Balıkçılık Etkinliği</td><td>Robin (Yağma) (1 Gün)</td><td>Ay Işığı</td></tr>
+          <tr><td>Sunday</td><td>Kötü Ruh Kovma Kağıdı</td><td>Arttırma Kağıdı</td><td>Kötü Ruh Kovma Kağıdı</td><td>Liderin Kitabı</td></tr>
+        </tbody>
+      </table>
+      <h3>Next fishing windows (with countdown)</h3>
+      <div id="charon-list"></div>
+    </article>
+
+    <footer>
+      <nav>
+        <a href="/terms/">Terms</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/cookie-policy/">Cookie Policy</a>
+        <a href="/contact/">Contact</a>
+        <a href="/calendar/">Calendar</a>
+      </nav>
+      <p>Independent fan project. Not affiliated with Metin2 or Gameforge.</p>
+    </footer>
+  </div>
+
+  <script>
+  (function () {
+    var IST = 'Europe/Istanbul';
+    var BER = 'Europe/Berlin';
+
+    function europeLocalToDate(y, m, d, hour, minute) {
+      var fmt = new Intl.DateTimeFormat('en-US', {
+        timeZone: BER, year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
+      });
+      var t = Date.UTC(y, m - 1, d, hour, minute || 0);
+      for (var i = 0; i < 6; i++) {
+        var parts = {};
+        fmt.formatToParts(new Date(t)).forEach(function (p) {
+          if (p.type !== 'literal') parts[p.type] = p.value;
+        });
+        var got = Date.UTC(+parts.year, +parts.month - 1, +parts.day, +parts.hour, +parts.minute);
+        var want = Date.UTC(y, m - 1, d, hour, minute || 0);
+        t += want - got;
+      }
+      return new Date(t);
+    }
+
+    function fmtRange(start, end) {
+      var day = new Intl.DateTimeFormat('tr-TR', {
+        timeZone: IST, weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+      }).format(start);
+      var tf = new Intl.DateTimeFormat('tr-TR', {
+        timeZone: IST, hour: '2-digit', minute: '2-digit', hour12: false
+      });
+      return day + ' · ' + tf.format(start) + ' – ' + tf.format(end) + ' TSİ';
+    }
+
+    function countdown(start, end, now) {
+      var mode, target;
+      if (now < start) { mode = 'start'; target = start; }
+      else if (now < end) { mode = 'end'; target = end; }
+      else return 'Etkinlik bitti';
+      var s = Math.max(0, Math.floor((target - now) / 1000));
+      var days = Math.floor(s / 86400);
+      var hours = Math.floor((s % 86400) / 3600);
+      var mins = Math.floor((s % 3600) / 60);
+      var secs = s % 60;
+      var body = days + ' gün ' + hours + ' saat ' + mins + ' dakika ' + secs + ' saniye';
+      return mode === 'start'
+        ? body + ' sonra etkinlik başlayacak'
+        : body + ' sonra etkinlik bitecek';
+    }
+
+    function card(title, start, end, now) {
+      return '<div class="card" style="padding:0.85rem;margin:0.5rem 0">' +
+        '<div><strong class="fish">' + title + '</strong></div>' +
+        '<div class="muted">' + fmtRange(start, end) + '</div>' +
+        '<div class="countdown" data-start="' + start.getTime() + '" data-end="' + end.getTime() + '">' +
+        countdown(start.getTime(), end.getTime(), now) + '</div></div>';
+    }
+
+    var ezel = [
+      ['2026-03-22T22:00:00+03:00', '2026-03-23T02:00:00+03:00'],
+      ['2026-04-19T21:00:00+03:00', '2026-04-20T01:00:00+03:00'],
+      ['2026-05-17T21:00:00+03:00', '2026-05-18T01:00:00+03:00'],
+      ['2026-06-14T21:00:00+03:00', '2026-06-15T01:00:00+03:00'],
+      ['2026-07-12T21:00:00+03:00', '2026-07-13T01:00:00+03:00'],
+      ['2026-08-09T21:00:00+03:00', '2026-08-10T01:00:00+03:00'],
+      ['2026-09-06T21:00:00+03:00', '2026-09-07T01:00:00+03:00'],
+      ['2026-10-04T21:00:00+03:00', '2026-10-05T01:00:00+03:00'],
+      ['2026-11-01T22:00:00+03:00', '2026-11-02T02:00:00+03:00']
+    ];
+
+    var marmara = [
+      ['2026-03-01','Arttırma Kağıdı','Nesneyi Efsunla'],
+      ['2026-03-02','Nugget','SüperTaş'],
+      ['2026-03-03','Münzevi Tavsiyesi','Yeşil Ejderha Fasülyesi'],
+      ['2026-03-04','Kötü Ruh Kovma Kağıdı','Cor Draconis'],
+      ['2026-03-05','İnce Kumaş','Muffin'],
+      ['2026-03-06','Kutsama Kağıdı','Küçük Kutsama'],
+      ['2026-03-07','Pet Kitabı Sandığı','Kırmızı Abanoz Sandık'],
+      ['2026-03-08','Balıkçılık','Kutsama Küresi'],
+      ['2026-03-09','Geçit Bileti','Yeşil Ejderha Fasülyesi'],
+      ['2026-03-10','SüperTaş','Cor Draconis'],
+      ['2026-03-11','İnce Kumaş','Nugget'],
+      ['2026-03-12','Münzevi Tavsiyesi','Kötü Ruh Kovma Kağıdı'],
+      ['2026-03-13','Kutsama Kağıdı','Küçük Kutsama'],
+      ['2026-03-14','Işınlanma Yüzüğü','Balıkçılık'],
+      ['2026-03-15','Arttırma Kağıdı','Kırmızı Abanoz Sandık'],
+      ['2026-03-16','Muffin','Cor Draconis'],
+      ['2026-03-17','Yeşil Ejderha Fasülyesi','SüperTaş'],
+      ['2026-03-18','İnce Kumaş','Kötü Ruh Kovma Kağıdı'],
+      ['2026-03-19','Cor Draconis','Münzevi Tavsiyesi'],
+      ['2026-03-20','Kutsama Kağıdı','Küçük Kutsama'],
+      ['2026-03-21','Arttırma Kağıdı','Ay Işığı'],
+      ['2026-03-22','Nesneyi Efsunla','Envanter Genişletme'],
+      ['2026-03-23','Geçit Bileti','Yeşil Ejderha Fasülyesi'],
+      ['2026-03-24','SüperTaş','Cor Draconis'],
+      ['2026-03-25','İnce Kumaş','Nugget'],
+      ['2026-03-26','Münzevi Tavsiyesi','Kötü Ruh Kovma Kağıdı'],
+      ['2026-03-27','Kutsama Kağıdı','Küçük Kutsama'],
+      ['2026-03-28','Balıkçılık','Işınlanma Yüzüğü'],
+      ['2026-03-29','Kırmızı Abanoz Sandık','Ejderha Alevi'],
+      ['2026-03-30','İnce Kumaş','Cor Draconis'],
+      ['2026-03-31','Kötü Ruh Kovma Kağıdı','SüperTaş']
+    ];
+
+    function berlinYmd(d) {
+      var fmt = new Intl.DateTimeFormat('en-US', {
+        timeZone: BER, year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'short'
+      });
+      var parts = {};
+      fmt.formatToParts(d).forEach(function (p) {
+        if (p.type !== 'literal') parts[p.type] = p.value;
+      });
+      return { y: +parts.year, m: +parts.month, day: +parts.day, wd: parts.weekday };
+    }
+
+    function render() {
+      var now = Date.now();
+      var ezelHtml = '';
+      ezel.forEach(function (pair) {
+        var s = new Date(pair[0]); var e = new Date(pair[1]);
+        if (e.getTime() > now) ezelHtml += card('Balıkçılık — Ezel / Barbaros', s, e, now);
+      });
+      document.getElementById('ezel-list').innerHTML = ezelHtml || '<p class="muted">Yaklaşan Ezel/Barbaros balıkçılık etkinliği yok.</p>';
+
+      var marHtml = '';
+      marmara.forEach(function (row) {
+        var p = row[0].split('-').map(Number);
+        var s1 = europeLocalToDate(p[0], p[1], p[2], 16, 0);
+        var e1 = europeLocalToDate(p[0], p[1], p[2], 20, 0);
+        var s2 = europeLocalToDate(p[0], p[1], p[2], 20, 0);
+        var e2 = new Date(europeLocalToDate(p[0], p[1], p[2], 0, 0).getTime() + 86400000);
+        if (e1.getTime() > now) marHtml += card(row[1] + ' — Marmara / Bagjanamu', s1, e1, now);
+        if (e2.getTime() > now) marHtml += card(row[2] + ' — Marmara / Bagjanamu', s2, e2, now);
+      });
+      document.getElementById('marmara-list').innerHTML = marHtml ||
+        '<p class="muted">Yayımlanan Mart 2026 takviminde bugünden sonra kalan etkinlik yok. Yeni ay takvimi wiki’de yayınlanınca güncellenecek.</p>';
+
+      var charon = [];
+      var seen = {};
+      for (var i = 0; i < 90 && charon.length < 10; i++) {
+        var probe = new Date(now + i * 86400000);
+        var b = berlinYmd(probe);
+        var key = b.y + '-' + b.m + '-' + b.day;
+        if (seen[key]) continue;
+        if (b.wd === 'Wed') {
+          seen[key] = 1;
+          var ws = europeLocalToDate(b.y, b.m, b.day, 2, 0);
+          var we = europeLocalToDate(b.y, b.m, b.day, 14, 0);
+          if (we.getTime() > now) charon.push(['Balıkçılık — Çarşamba 02:00–14:00 Avrupa', ws, we]);
+        } else if (b.wd === 'Sat') {
+          seen[key] = 1;
+          var ss = europeLocalToDate(b.y, b.m, b.day, 14, 0);
+          var se = europeLocalToDate(b.y, b.m, b.day, 18, 0);
+          if (se.getTime() > now) charon.push(['Balıkçılık — Cumartesi 14:00–18:00 Avrupa', ss, se]);
+        }
+      }
+      var chHtml = '';
+      charon.forEach(function (c) { chHtml += card(c[0], c[1], c[2], now); });
+      document.getElementById('charon-list').innerHTML = chHtml;
+    }
+
+    render();
+    setInterval(function () {
+      var now = Date.now();
+      document.querySelectorAll('.countdown').forEach(function (el) {
+        el.textContent = countdown(+el.getAttribute('data-start'), +el.getAttribute('data-end'), now);
+      });
+    }, 1000);
+  })();
+  </script>
+</body>
+</html>

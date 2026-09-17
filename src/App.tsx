@@ -1,9 +1,13 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { Layout } from './components/Layout'
 import { LangProvider } from './hooks/useLang'
-import { AboutPage, HowToPage, RulesPage } from './pages/InfoPages'
 import { PlayPage } from './pages/PlayPage'
 
+/**
+ * Interactive puzzle lives in the SPA.
+ * Content pages (how-to, rules, about, calendar, legal, contact) are static HTML
+ * under public page folders so Googlebot/AdSense can read them without JS.
+ */
 export default function App() {
   return (
     <LangProvider>
@@ -11,9 +15,6 @@ export default function App() {
         <Routes>
           <Route element={<Layout />}>
             <Route index element={<PlayPage />} />
-            <Route path="rules" element={<RulesPage />} />
-            <Route path="how-to" element={<HowToPage />} />
-            <Route path="about" element={<AboutPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
         </Routes>

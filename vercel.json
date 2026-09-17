@@ -1,7 +1,7 @@
 {
   "rewrites": [
     {
-      "source": "/((?!ads\\.txt$).*)",
+      "source": "/((?!ads\\.txt$|robots\\.txt$|sitemap\\.xml$|site\\.css$|terms(?:/.*)?$|privacy(?:/.*)?$|cookie-policy(?:/.*)?$|contact(?:/.*)?$|calendar(?:/.*)?$|how-to(?:/.*)?$|about(?:/.*)?$|rules(?:/.*)?$|pieces(?:/.*)?$|data(?:/.*)?$|board(?:/.*)?$|favicon\\.png$|favicon\\.svg$|icons\\.svg$).*)",
       "destination": "/index.html"
     }
   ],
@@ -10,6 +10,12 @@
       "source": "/ads.txt",
       "headers": [
         { "key": "Content-Type", "value": "text/plain; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/(terms|privacy|cookie-policy|contact|calendar|how-to|about|rules)",
+      "headers": [
         { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
       ]
     }

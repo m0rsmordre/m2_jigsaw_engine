@@ -3,6 +3,9 @@ import { FlagEn, FlagTr } from './Flags'
 import { useBlockDevShortcuts } from '../hooks/useBlockDevShortcuts'
 import { useLang } from '../hooks/useLang'
 
+const ext =
+  'rounded-full px-3 py-1.5 text-sm font-semibold text-slate-300 hover:bg-white/10 hover:text-white border border-transparent'
+
 export function Layout() {
   useBlockDevShortcuts()
   const { lang, setLang, d } = useLang()
@@ -14,7 +17,7 @@ export function Layout() {
     <div className="mx-auto flex min-h-screen max-w-6xl flex-col px-4 py-5">
       <header className="mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
         <div>
-          <h1 className="text-2xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-sky-300 to-violet-300">
+          <h1 className="bg-gradient-to-r from-sky-300 to-violet-300 bg-clip-text text-2xl font-extrabold tracking-tight text-transparent">
             {d.appTitle}
           </h1>
         </div>
@@ -22,15 +25,22 @@ export function Layout() {
           <NavLink to="/" end className={({ isActive }) => `${link} ${isActive ? active : 'border border-transparent'}`}>
             {d.navPlay}
           </NavLink>
-          <NavLink to="/rules" className={({ isActive }) => `${link} ${isActive ? active : 'border border-transparent'}`}>
-            {d.navRules}
-          </NavLink>
-          <NavLink to="/how-to" className={({ isActive }) => `${link} ${isActive ? active : 'border border-transparent'}`}>
+          {/* Full-page static HTML for crawlers / AdSense */}
+          <a className={ext} href="/how-to/">
             {d.navHowTo}
-          </NavLink>
-          <NavLink to="/about" className={({ isActive }) => `${link} ${isActive ? active : 'border border-transparent'}`}>
+          </a>
+          <a className={ext} href="/rules/">
+            {d.navRules}
+          </a>
+          <a className={ext} href="/calendar/">
+            {d.navCalendar}
+          </a>
+          <a className={ext} href="/about/">
             {d.navAbout}
-          </NavLink>
+          </a>
+          <a className={ext} href="/contact/">
+            {d.navContact}
+          </a>
           <div className="ml-2 flex overflow-hidden rounded-full border border-white/15">
             <button
               type="button"
@@ -55,7 +65,24 @@ export function Layout() {
       </header>
       <Outlet />
       <footer className="mt-auto border-t border-white/10 pt-4 text-center text-xs text-slate-500">
-        {d.disclaimer}
+        <nav className="mb-2 flex flex-wrap justify-center gap-3">
+          <a className="hover:text-sky-300" href="/terms/">
+            Terms
+          </a>
+          <a className="hover:text-sky-300" href="/privacy/">
+            Privacy
+          </a>
+          <a className="hover:text-sky-300" href="/cookie-policy/">
+            Cookie Policy
+          </a>
+          <a className="hover:text-sky-300" href="/contact/">
+            Contact
+          </a>
+          <a className="hover:text-sky-300" href="/calendar/">
+            Calendar
+          </a>
+        </nav>
+        <p>{d.disclaimer}</p>
       </footer>
     </div>
   )
